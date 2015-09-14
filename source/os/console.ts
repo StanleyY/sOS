@@ -114,11 +114,15 @@ module TSOS {
       this.currentYPosition += this.lineHeight;
       console.log(this.currentYPosition);
       if (this.currentYPosition > _Canvas.height) {
-        var temp = _Canvas.toDataURL();
+        // When a canvas is resized, it gets wiped. The original image is saved,
+        // then restored after resizing.
+        var original_canvas = _Canvas.toDataURL();
         _Canvas.height = this.currentYPosition + (this.lineHeight * 3);
         var img = new Image();
-        img.src = temp;
+        img.src = original_canvas;
         _DrawingContext.drawImage(img, 0, 0);
+        var consoleDiv = document.getElementById("divConsole");
+        consoleDiv.scrollTop = consoleDiv.scrollHeight;
       }
     }
   }
