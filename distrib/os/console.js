@@ -21,6 +21,9 @@ var TSOS;
             this.currentXPosition = currentXPosition;
             this.currentYPosition = currentYPosition;
             this.buffer = buffer;
+            this.lineHeight = _DefaultFontSize +
+                _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
+                _FontHeightMargin;
         }
         Console.prototype.init = function () {
             this.clearScreen();
@@ -37,13 +40,21 @@ var TSOS;
             while (_KernelInputQueue.getSize() > 0) {
                 // Get the next character from the kernel input queue.
                 var chr = _KernelInputQueue.dequeue();
-                // Check to see if it's "special" (enter or ctrl-c) or "normal" (anything else that the keyboard device driver gave us).
+                // Check to see if it's "special" (enter or ctrl-c) or "normal"
                 if (chr === String.fromCharCode(13)) {
                     // The enter key marks the end of a console command, so ...
                     // ... tell the shell ...
                     _OsShell.handleInput(this.buffer);
                     // ... and reset our buffer.
                     this.buffer = "";
+                }
+                else if (chr === String.fromCharCode(8)) {
+                    // Check if buffer is empty or not
+                    if (this.buffer.length > 0) {
+                        var removedChar = this.buffer.charAt(this.buffer.length - 1);
+                        this.buffer = this.buffer.substring(0, this.buffer.length - 1);
+                        this.removeChar(removedChar);
+                    }
                 }
                 else {
                     // This is a "normal" character, so ...
@@ -71,6 +82,14 @@ var TSOS;
                 this.currentXPosition = this.currentXPosition + offset;
             }
         };
+        Console.prototype.removeChar = function (char) {
+            if (char !== "") {
+                var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, char);
+                // Clear the area using a rectange the size of the character.
+                _DrawingContext.clearRect(this.currentXPosition - offset - 1, this.currentYPosition - this.lineHeight, offset, this.lineHeight + 1);
+                this.currentXPosition = this.currentXPosition - offset;
+            }
+        };
         Console.prototype.advanceLine = function () {
             this.currentXPosition = 0;
             /*
@@ -78,9 +97,7 @@ var TSOS;
              * Font descent measures from the baseline to the lowest point in the font.
              * Font height margin is extra spacing between the lines.
              */
-            this.currentYPosition += _DefaultFontSize +
-                _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
-                _FontHeightMargin;
+            this.currentYPosition += this.lineHeight;
             // TODO: Handle scrolling. (iProject 1)
         };
         return Console;

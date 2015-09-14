@@ -35,6 +35,7 @@ module TSOS {
 
             // Get a global reference to the drawing context.
             _DrawingContext = _Canvas.getContext("2d");
+            console.log(_DrawingContext);
 
             // Enable the added-in canvas text functions (see canvastext.ts for provenance and details).
             CanvasTextFunctions.enable(_DrawingContext);   // Text functionality is now built in to the HTML5 canvas. But this is old-school, and fun, so we'll keep it.
