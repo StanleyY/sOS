@@ -30,6 +30,14 @@ h3 {
   font-style: normal;
 }
 
+#divConsole {
+  float:left;
+  height:500px;
+  margin:4px;
+  overflow-y: scroll;
+  width:500px;
+}
+
 #display {
   background-color:#DFDBC3;
   border: 2px solid red;

@@ -112,8 +112,14 @@ module TSOS {
        * Font height margin is extra spacing between the lines.
        */
       this.currentYPosition += this.lineHeight;
-
-      // TODO: Handle scrolling. (iProject 1)
+      console.log(this.currentYPosition);
+      if (this.currentYPosition > _Canvas.height) {
+        var temp = _Canvas.toDataURL();
+        _Canvas.height = this.currentYPosition + (this.lineHeight * 3);
+        var img = new Image();
+        img.src = temp;
+        _DrawingContext.drawImage(img, 0, 0);
+      }
     }
   }
 }

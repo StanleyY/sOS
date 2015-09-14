@@ -32,6 +32,7 @@ module TSOS {
 
             // Get a global reference to the canvas.  TODO: Should we move this stuff into a Display Device Driver?
             _Canvas = <HTMLCanvasElement>document.getElementById('display');
+            console.log(_Canvas);
 
             // Get a global reference to the drawing context.
             _DrawingContext = _Canvas.getContext("2d");
