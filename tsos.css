@@ -32,16 +32,32 @@ h3 {
 
 #divConsole {
   float:left;
-  height:508px;
-  margin:4px;
+  height: 508px;
+  margin: 4px;
   overflow-y: scroll;
-  width:521px;
+  width: 521px;
 }
 
 #display {
-  background-color:#DFDBC3;
+  background-color: #DFDBC3;
   border: 2px solid red;
   cursor: default;
+}
+
+#divButtonBar {
+  margin: 4px;
+}
+
+#divMain {
+  width: 100%;
+}
+
+#divLog {
+  margin-left: 520px;
+}
+
+#divUserProgramInput {
+  margin-left: 520px;
 }
 
 .normal_button {
