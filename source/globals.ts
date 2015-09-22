@@ -48,6 +48,9 @@ var _KernelBuffers: any[] = null;   // when clearly 'any' is not what we want. T
 // Keyboard
 var _EscapedKeys = [8, 9, 13, 17, 18, 27, 32, 38, 40]; // Backspace, Tab, Enter, Ctrl, Alt, Esc, Space, Up, Down
 
+// Program Input
+var _ProgramInput;
+
 // Standard input and output
 var _StdIn;    // Same "to null or not to null" issue as above.
 var _StdOut;

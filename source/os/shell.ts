@@ -110,6 +110,12 @@ module TSOS {
                             "status",
                             "- updates taskbar status.");
       this.commandList[this.commandList.length] = sc;
+
+      //validate
+      sc = new ShellCommand(this.shellValidate,
+                            "validate",
+                            "- validates the values inside of Program Input.");
+      this.commandList[this.commandList.length] = sc;
       // ps  - list the running processes and their IDs
       // kill <id> - kills the specified process id.
 
@@ -349,6 +355,15 @@ module TSOS {
         _TaskBarStatus = args[0];
       } else {
         _StdOut.putText("Usage: status <string>  Please supply a string.");
+      }
+    }
+
+    public shellValidate(args) {
+      var regex = /^[0-9A-F ]*$/g;
+      if (_ProgramInput.value.match(regex)) {
+        _StdOut.putText("Input is validate");
+      } else {
+        _StdOut.putText("Input is invalid.");
       }
     }
   }
