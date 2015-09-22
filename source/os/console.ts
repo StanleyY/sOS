@@ -60,12 +60,12 @@ module TSOS {
         } else if (chr === String.fromCharCode(8)) {  // Backspace
           // Check if buffer is empty or not
           if (this.buffer.length > 0) {
-              var removedChar = this.buffer.charAt(
-                  this.buffer.length - 1);
-              this.buffer = this.buffer.substring(
-                  0, this.buffer.length - 1);
+            var removedChar = this.buffer.charAt(
+                this.buffer.length - 1);
+            this.buffer = this.buffer.substring(
+                0, this.buffer.length - 1);
 
-              this.removeChar(removedChar);
+            this.removeChar(removedChar);
           }
         } else if (chr === String.fromCharCode(9)) {  // Tab
           this.autoComplete();
