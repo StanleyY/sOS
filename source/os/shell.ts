@@ -96,6 +96,11 @@ module TSOS {
                             "coinflip",
                             "- flips a coin.");
       this.commandList[this.commandList.length] = sc;
+      //whereami
+      sc = new ShellCommand(this.shellWhereAmI,
+                            "whereami",
+                            "- gets your location.");
+      this.commandList[this.commandList.length] = sc;
       // ps  - list the running processes and their IDs
       // kill <id> - kills the specified process id.
 
@@ -324,6 +329,10 @@ module TSOS {
       } else {
         _StdOut.putText("TAILS!");
       }
+    }
+
+    public shellWhereAmI(args) {
+      _StdOut.putText("good question.");
     }
   }
 }

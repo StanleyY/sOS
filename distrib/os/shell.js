@@ -59,6 +59,9 @@ var TSOS;
             //coinflip
             sc = new TSOS.ShellCommand(this.shellCoinflip, "coinflip", "- flips a coin.");
             this.commandList[this.commandList.length] = sc;
+            //whereami
+            sc = new TSOS.ShellCommand(this.shellWhereAmI, "whereami", "- gets your location.");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             //
@@ -275,6 +278,9 @@ var TSOS;
             else {
                 _StdOut.putText("TAILS!");
             }
+        };
+        Shell.prototype.shellWhereAmI = function (args) {
+            _StdOut.putText("good question.");
         };
         return Shell;
     })();
