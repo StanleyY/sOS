@@ -28,8 +28,6 @@ var TSOS;
             // More?
         };
         DeviceDriverKeyboard.prototype.krnKbdDispatchKeyPress = function (event) {
-            // Parse the params.    TODO: Check that the params are valid and osTrapError if not.
-            var chr = "";
             if (event.charCode > 0) {
                 _Kernel.krnTrace("Added Char to queue, code:" + event.charCode);
                 _KernelInputQueue.enqueue(String.fromCharCode(event.charCode));
