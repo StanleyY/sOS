@@ -106,6 +106,17 @@ module TSOS {
       var output = _OsShell.commandListNames.filter(function(name){
         return name.startsWith(this.buffer);
       }.bind(this));
+      if (output.length > 0) {
+        if (output.length > 1) {
+          this.advanceLine();
+          this.putText(output.join(", "));
+          this.advanceLine();
+          this.putText(">" + this.buffer);
+        } else {
+          this.putText(output[0].substring(0 + this.buffer.length));
+          this.buffer = output[0];
+        }
+      }
     }
 
     public putText(text): void {
