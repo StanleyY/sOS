@@ -59,7 +59,8 @@ var TSOS;
         Utils.updateTaskbar = function () {
             var t = new Date();
             _TaskBar.value = "Status: " + _TaskBarStatus + "\nTime: " +
-                t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds();
+                t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds() +
+                "\nDate: " + t.getMonth() + "/" + t.getDate() + "/" + t.getFullYear();
         };
         return Utils;
     })();
