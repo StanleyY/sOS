@@ -1,8 +1,8 @@
 /* --------
-   Utils.ts
+ Utils.ts
 
-   Utility functions.
-   -------- */
+ Utility functions.
+ -------- */
 var TSOS;
 (function (TSOS) {
     var Utils = (function () {
