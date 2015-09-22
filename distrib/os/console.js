@@ -98,7 +98,6 @@ var TSOS;
              * Font height margin is extra spacing between the lines.
              */
             this.currentYPosition += this.lineHeight;
-            console.log(this.currentYPosition);
             if (this.currentYPosition > _Canvas.height) {
                 // When a canvas is resized, it gets wiped. The original image is saved,
                 // then restored after resizing.

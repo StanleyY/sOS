@@ -43,5 +43,18 @@ module TSOS {
       }
       return retVal;
     }
+
+    public static bsod(): void {
+      // Reset to default canvas size.
+      _Canvas.height = 500;
+      _DrawingContext.rect(0, 0, 500, 500);
+      _DrawingContext.fillStyle = "#1976D2";
+      _DrawingContext.fill();
+      _DrawingContext.font="30px Verdana";
+      _DrawingContext.fillStyle = "red";
+      _DrawingContext.fillText("Illegal Operation!", 50, 50);
+      Control.hostBtnHaltOS_click('void');
+      throw "BSOD!";
+    }
   }
 }

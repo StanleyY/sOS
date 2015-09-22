@@ -79,6 +79,12 @@ module TSOS {
                             "<string> - Sets the prompt.");
       this.commandList[this.commandList.length] = sc;
 
+      //bsod
+      sc = new ShellCommand(this.shellBSOD,
+                            "bsod",
+                            "- display the error page.");
+      this.commandList[this.commandList.length] = sc;
+
       // ps  - list the running processes and their IDs
       // kill <id> - kills the specified process id.
 
@@ -285,6 +291,10 @@ module TSOS {
       } else {
         _StdOut.putText("Usage: prompt <string>  Please supply a string.");
       }
+    }
+
+    public shellBSOD(args) {
+      Utils.bsod();
     }
 
   }
