@@ -28,7 +28,10 @@ var TSOS;
             // More?
         };
         DeviceDriverKeyboard.prototype.krnKbdDispatchKeyPress = function (event) {
-            if (event.charCode > 0) {
+            if (Array.isArray(event)) {
+                _KernelInputQueue.enqueue(String.fromCharCode(event[0]));
+            }
+            else if (event.charCode > 0) {
                 _Kernel.krnTrace("Added Char to queue, code:" + event.charCode);
                 _KernelInputQueue.enqueue(String.fromCharCode(event.charCode));
             }

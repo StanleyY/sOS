@@ -351,15 +351,15 @@ module TSOS {
     }
 
     public shellStatus(args) {
-      if (args.length == 1) {
-        _TaskBarStatus = args[0];
+      if (args.length > 0) {
+        _TaskBarStatus = args.join(" ");
       } else {
         _StdOut.putText("Usage: status <string>  Please supply a string.");
       }
     }
 
     public shellLoad(args) {
-      var regex = /^[0-9A-F ]*$/g;
+      var regex = /^[0-9A-F ]+$/g;
       if (_ProgramInput.value.match(regex)) {
         _StdOut.putText("Input is validate");
       } else {

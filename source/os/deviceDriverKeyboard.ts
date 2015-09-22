@@ -26,7 +26,9 @@ module TSOS {
     }
 
     public krnKbdDispatchKeyPress(event) {
-      if (event.charCode > 0) {
+      if (Array.isArray(event)) {  // This block is a hack to for Glados
+        _KernelInputQueue.enqueue(String.fromCharCode(event[0]));
+      } else if (event.charCode > 0) {
          _Kernel.krnTrace("Added Char to queue, code:" + event.charCode);
         _KernelInputQueue.enqueue(String.fromCharCode(event.charCode));
       } else if (_EscapedKeys.indexOf(event.which) > -1) {
