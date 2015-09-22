@@ -76,7 +76,7 @@ module TSOS {
             }
             this.bufferHistoryPos--;
             this.buffer = this.bufferHistory[this.bufferHistoryPos];
-            console.log(this.buffer);
+            this.replaceLine(this.buffer);
           }
         } else if (chr === String.fromCharCode(40)) {  // Up Arrow
           if (this.bufferHistoryPos < this.bufferHistory.length) {
@@ -86,7 +86,7 @@ module TSOS {
             } else {
               this.buffer = this.bufferHistory[this.bufferHistoryPos];
             }
-            console.log(this.buffer);
+            this.replaceLine(this.buffer);
           }
         } else {
           // This is a "normal" character, so ...
@@ -126,11 +126,24 @@ module TSOS {
             this.currentFont, this.currentFontSize, char);
         // Clear the area using a rectange the size of the character.
         _DrawingContext.clearRect(this.currentXPosition - offset,
-                                  this.currentYPosition - this.lineHeight,
+                                  this.currentYPosition - _DefaultFontSize,
                                   offset + 1,
                                   this.lineHeight + 1);
         this.currentXPosition = this.currentXPosition - offset;
       }
+    }
+
+    public replaceLine(text): void {
+      this.removeLine();
+      this.putText(">" + text);
+    }
+
+    public removeLine(): void {
+      _DrawingContext.clearRect(0,
+                                this.currentYPosition - _DefaultFontSize,
+                                _Canvas.width,
+                                this.lineHeight);
+      this.currentXPosition = 0;
     }
 
     public advanceLine(): void {

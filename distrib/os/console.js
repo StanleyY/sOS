@@ -76,7 +76,7 @@ var TSOS;
                         }
                         this.bufferHistoryPos--;
                         this.buffer = this.bufferHistory[this.bufferHistoryPos];
-                        console.log(this.buffer);
+                        this.replaceLine(this.buffer);
                     }
                 }
                 else if (chr === String.fromCharCode(40)) {
@@ -88,7 +88,7 @@ var TSOS;
                         else {
                             this.buffer = this.bufferHistory[this.bufferHistoryPos];
                         }
-                        console.log(this.buffer);
+                        this.replaceLine(this.buffer);
                     }
                 }
                 else {
@@ -121,9 +121,17 @@ var TSOS;
             if (char !== "") {
                 var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, char);
                 // Clear the area using a rectange the size of the character.
-                _DrawingContext.clearRect(this.currentXPosition - offset, this.currentYPosition - this.lineHeight, offset + 1, this.lineHeight + 1);
+                _DrawingContext.clearRect(this.currentXPosition - offset, this.currentYPosition - _DefaultFontSize, offset + 1, this.lineHeight + 1);
                 this.currentXPosition = this.currentXPosition - offset;
             }
+        };
+        Console.prototype.replaceLine = function (text) {
+            this.removeLine();
+            this.putText(">" + text);
+        };
+        Console.prototype.removeLine = function () {
+            _DrawingContext.clearRect(0, this.currentYPosition - _DefaultFontSize, _Canvas.width, this.lineHeight);
+            this.currentXPosition = 0;
         };
         Console.prototype.advanceLine = function () {
             this.currentXPosition = 0;
