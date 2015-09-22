@@ -96,9 +96,9 @@ module TSOS {
         var offset = _DrawingContext.measureText(
             this.currentFont, this.currentFontSize, char);
         // Clear the area using a rectange the size of the character.
-        _DrawingContext.clearRect(this.currentXPosition - offset - 1,
+        _DrawingContext.clearRect(this.currentXPosition - offset,
                                   this.currentYPosition - this.lineHeight,
-                                  offset,
+                                  offset + 1,
                                   this.lineHeight + 1);
         this.currentXPosition = this.currentXPosition - offset;
       }
