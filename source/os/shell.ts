@@ -91,6 +91,11 @@ module TSOS {
                             "date",
                             "- display the date.");
       this.commandList[this.commandList.length] = sc;
+      //coinflip
+      sc = new ShellCommand(this.shellCoinflip,
+                            "coinflip",
+                            "- flips a coin.");
+      this.commandList[this.commandList.length] = sc;
       // ps  - list the running processes and their IDs
       // kill <id> - kills the specified process id.
 
@@ -242,6 +247,7 @@ module TSOS {
     }
 
     public shellCls(args) {
+      _Canvas.height = 500;
       _StdOut.clearScreen();
       _StdOut.resetXY();
     }
@@ -312,5 +318,12 @@ module TSOS {
       _StdOut.putText(d.getMonth() + "/" + d.getDate() + "/" + d.getFullYear());
     }
 
+    public shellCoinflip(args) {
+      if (Math.random() > 0.5) {
+        _StdOut.putText("HEADS!");
+      } else {
+        _StdOut.putText("TAILS!");
+      }
+    }
   }
 }

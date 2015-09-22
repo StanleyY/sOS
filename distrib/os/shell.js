@@ -56,6 +56,9 @@ var TSOS;
             //date
             sc = new TSOS.ShellCommand(this.shellDate, "date", "- display the date.");
             this.commandList[this.commandList.length] = sc;
+            //coinflip
+            sc = new TSOS.ShellCommand(this.shellCoinflip, "coinflip", "- flips a coin.");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             //
@@ -196,6 +199,7 @@ var TSOS;
             // TODO: Stop the final prompt from being displayed.  If possible.  Not a high priority.  (Damn OCD!)
         };
         Shell.prototype.shellCls = function (args) {
+            _Canvas.height = 500;
             _StdOut.clearScreen();
             _StdOut.resetXY();
         };
@@ -263,6 +267,14 @@ var TSOS;
         Shell.prototype.shellDate = function (args) {
             var d = new Date();
             _StdOut.putText(d.getMonth() + "/" + d.getDate() + "/" + d.getFullYear());
+        };
+        Shell.prototype.shellCoinflip = function (args) {
+            if (Math.random() > 0.5) {
+                _StdOut.putText("HEADS!");
+            }
+            else {
+                _StdOut.putText("TAILS!");
+            }
         };
         return Shell;
     })();
