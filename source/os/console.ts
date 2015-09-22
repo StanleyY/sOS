@@ -70,27 +70,9 @@ module TSOS {
         } else if (chr === String.fromCharCode(9)) {  // Tab
           this.autoComplete();
         } else if (chr === String.fromCharCode(38)) {  // Up Arrow
-          if (this.bufferHistoryPos > 0) {
-            if (this.bufferHistoryPos == this.bufferHistory.length) {
-              // Store what was newly entered but not executed.
-              if (this.bufferHistory[this.bufferHistoryPos - 1] != this.buffer) {
-                this.tempBuffer = this.buffer;
-              }
-            }
-            this.bufferHistoryPos--;
-            this.buffer = this.bufferHistory[this.bufferHistoryPos];
-            this.replaceLine(this.buffer);
-          }
+          this.goUpHistory();
         } else if (chr === String.fromCharCode(40)) {  // Up Arrow
-          if (this.bufferHistoryPos < this.bufferHistory.length) {
-            this.bufferHistoryPos++;
-            if (this.bufferHistoryPos == this.bufferHistory.length) {
-              this.buffer = this.tempBuffer;
-            } else {
-              this.buffer = this.bufferHistory[this.bufferHistoryPos];
-            }
-            this.replaceLine(this.buffer);
-          }
+          this.goDownHistory();
         } else {
           // This is a "normal" character, so ...
           // ... draw it on the screen...
@@ -99,6 +81,32 @@ module TSOS {
           this.buffer += chr;
         }
         // TODO: Write a case for Ctrl-C.
+      }
+    }
+
+    public goUpHistory(): void {
+      if (this.bufferHistoryPos > 0) {
+        if (this.bufferHistoryPos == this.bufferHistory.length) {
+          // Store what was newly entered but not executed.
+          if (this.bufferHistory[this.bufferHistoryPos - 1] != this.buffer) {
+            this.tempBuffer = this.buffer;
+          }
+        }
+        this.bufferHistoryPos--;
+        this.buffer = this.bufferHistory[this.bufferHistoryPos];
+        this.replaceLine(this.buffer);
+      }
+    }
+
+    public goDownHistory(): void {
+      if (this.bufferHistoryPos < this.bufferHistory.length) {
+        this.bufferHistoryPos++;
+        if (this.bufferHistoryPos == this.bufferHistory.length) {
+          this.buffer = this.tempBuffer;
+        } else {
+          this.buffer = this.bufferHistory[this.bufferHistoryPos];
+        }
+        this.replaceLine(this.buffer);
       }
     }
 

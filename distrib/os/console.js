@@ -71,29 +71,10 @@ var TSOS;
                     this.autoComplete();
                 }
                 else if (chr === String.fromCharCode(38)) {
-                    if (this.bufferHistoryPos > 0) {
-                        if (this.bufferHistoryPos == this.bufferHistory.length) {
-                            // Store what was newly entered but not executed.
-                            if (this.bufferHistory[this.bufferHistoryPos - 1] != this.buffer) {
-                                this.tempBuffer = this.buffer;
-                            }
-                        }
-                        this.bufferHistoryPos--;
-                        this.buffer = this.bufferHistory[this.bufferHistoryPos];
-                        this.replaceLine(this.buffer);
-                    }
+                    this.goUpHistory();
                 }
                 else if (chr === String.fromCharCode(40)) {
-                    if (this.bufferHistoryPos < this.bufferHistory.length) {
-                        this.bufferHistoryPos++;
-                        if (this.bufferHistoryPos == this.bufferHistory.length) {
-                            this.buffer = this.tempBuffer;
-                        }
-                        else {
-                            this.buffer = this.bufferHistory[this.bufferHistoryPos];
-                        }
-                        this.replaceLine(this.buffer);
-                    }
+                    this.goDownHistory();
                 }
                 else {
                     // This is a "normal" character, so ...
@@ -102,6 +83,31 @@ var TSOS;
                     // ... and add it to our buffer.
                     this.buffer += chr;
                 }
+            }
+        };
+        Console.prototype.goUpHistory = function () {
+            if (this.bufferHistoryPos > 0) {
+                if (this.bufferHistoryPos == this.bufferHistory.length) {
+                    // Store what was newly entered but not executed.
+                    if (this.bufferHistory[this.bufferHistoryPos - 1] != this.buffer) {
+                        this.tempBuffer = this.buffer;
+                    }
+                }
+                this.bufferHistoryPos--;
+                this.buffer = this.bufferHistory[this.bufferHistoryPos];
+                this.replaceLine(this.buffer);
+            }
+        };
+        Console.prototype.goDownHistory = function () {
+            if (this.bufferHistoryPos < this.bufferHistory.length) {
+                this.bufferHistoryPos++;
+                if (this.bufferHistoryPos == this.bufferHistory.length) {
+                    this.buffer = this.tempBuffer;
+                }
+                else {
+                    this.buffer = this.bufferHistory[this.bufferHistoryPos];
+                }
+                this.replaceLine(this.buffer);
             }
         };
         Console.prototype.autoComplete = function () {
