@@ -94,6 +94,7 @@ var TSOS;
                     }
                 }
                 this.bufferHistoryPos--;
+                this.removeLines(this.buffer);
                 this.buffer = this.bufferHistory[this.bufferHistoryPos];
                 this.replaceLine(this.buffer);
             }
@@ -101,6 +102,7 @@ var TSOS;
         Console.prototype.goDownHistory = function () {
             if (this.bufferHistoryPos < this.bufferHistory.length) {
                 this.bufferHistoryPos++;
+                this.removeLines(this.buffer);
                 if (this.bufferHistoryPos == this.bufferHistory.length) {
                     this.buffer = this.tempBuffer;
                 }
@@ -177,6 +179,13 @@ var TSOS;
         Console.prototype.removeLine = function () {
             _DrawingContext.clearRect(0, this.currentYPosition - _DefaultFontSize, _Canvas.width, this.lineHeight);
             this.currentXPosition = 0;
+        };
+        Console.prototype.removeLines = function (text) {
+            var lines = _DrawingContext.measureText(this.currentFont, this.currentFontSize, text) / _Canvas.width;
+            for (var i = 0; i < lines - 1; i++) {
+                this.removeLine();
+                this.currentYPosition = this.currentYPosition - this.lineHeight;
+            }
         };
         Console.prototype.advanceLine = function () {
             this.currentXPosition = 0;

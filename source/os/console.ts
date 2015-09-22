@@ -93,6 +93,7 @@ module TSOS {
           }
         }
         this.bufferHistoryPos--;
+        this.removeLines(this.buffer)
         this.buffer = this.bufferHistory[this.bufferHistoryPos];
         this.replaceLine(this.buffer);
       }
@@ -101,6 +102,7 @@ module TSOS {
     public goDownHistory(): void {
       if (this.bufferHistoryPos < this.bufferHistory.length) {
         this.bufferHistoryPos++;
+        this.removeLines(this.buffer)
         if (this.bufferHistoryPos == this.bufferHistory.length) {
           this.buffer = this.tempBuffer;
         } else {
@@ -192,6 +194,15 @@ module TSOS {
                                 _Canvas.width,
                                 this.lineHeight);
       this.currentXPosition = 0;
+    }
+
+    public removeLines(text): void {
+      var lines = _DrawingContext.measureText(
+            this.currentFont, this.currentFontSize, text) / _Canvas.width;
+      for (var i = 0; i < lines - 1; i++) {
+        this.removeLine();
+        this.currentYPosition = this.currentYPosition - this.lineHeight;
+      }
     }
 
     public advanceLine(): void {
