@@ -38,9 +38,6 @@ var TSOS;
                 _Kernel.krnTrace("Added Escape Char to queue, code:" + event.which);
                 _KernelInputQueue.enqueue(String.fromCharCode(event.which));
             }
-            else {
-                _Kernel.krnTrace("Ignored key, code:" + event.which);
-            }
         };
         return DeviceDriverKeyboard;
     })(TSOS.DeviceDriver);
