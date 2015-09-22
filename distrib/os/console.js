@@ -111,6 +111,8 @@ var TSOS;
             if (output.length > 0) {
                 if (output.length > 1) {
                     this.advanceLine();
+                    this.putText("Possible Options:");
+                    this.advanceLine();
                     this.putText(output.join(", "));
                     this.advanceLine();
                     this.putText(">" + this.buffer);
