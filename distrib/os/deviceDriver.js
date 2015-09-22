@@ -11,7 +11,7 @@ var TSOS;
             if (isr === void 0) { isr = null; }
             this.driverEntry = driverEntry;
             this.isr = isr;
-            this.version = '0.07';
+            this.version = '0.25';
             this.status = 'unloaded';
             this.preemptable = false;
         }
