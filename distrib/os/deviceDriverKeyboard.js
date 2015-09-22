@@ -47,6 +47,8 @@ var TSOS;
                 _KernelInputQueue.enqueue(chr);
             }
             else if (((keyCode >= 48) && (keyCode <= 57)) ||
+                (keyCode == 38) ||
+                (keyCode == 40) ||
                 (keyCode == 32) ||
                 (keyCode == 13) ||
                 (keyCode == 8)) {

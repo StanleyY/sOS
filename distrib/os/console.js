@@ -10,17 +10,23 @@
 var TSOS;
 (function (TSOS) {
     var Console = (function () {
-        function Console(currentFont, currentFontSize, currentXPosition, currentYPosition, buffer) {
+        function Console(currentFont, currentFontSize, currentXPosition, currentYPosition, buffer, tempBuffer, bufferHistory, bufferHistoryPos) {
             if (currentFont === void 0) { currentFont = _DefaultFontFamily; }
             if (currentFontSize === void 0) { currentFontSize = _DefaultFontSize; }
             if (currentXPosition === void 0) { currentXPosition = 0; }
             if (currentYPosition === void 0) { currentYPosition = _DefaultFontSize; }
             if (buffer === void 0) { buffer = ""; }
+            if (tempBuffer === void 0) { tempBuffer = ""; }
+            if (bufferHistory === void 0) { bufferHistory = []; }
+            if (bufferHistoryPos === void 0) { bufferHistoryPos = -1; }
             this.currentFont = currentFont;
             this.currentFontSize = currentFontSize;
             this.currentXPosition = currentXPosition;
             this.currentYPosition = currentYPosition;
             this.buffer = buffer;
+            this.tempBuffer = tempBuffer;
+            this.bufferHistory = bufferHistory;
+            this.bufferHistoryPos = bufferHistoryPos;
             this.lineHeight = _DefaultFontSize +
                 _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
                 _FontHeightMargin;
@@ -45,7 +51,12 @@ var TSOS;
                     // The enter key marks the end of a console command, so ...
                     // ... tell the shell ...
                     _OsShell.handleInput(this.buffer);
-                    // ... and reset our buffer.
+                    // ... and reset our buffer while storing it if it is different from
+                    // the most recent history.
+                    if (this.bufferHistory[this.bufferHistory.length - 1] != this.buffer) {
+                        this.bufferHistory[this.bufferHistory.length] = this.buffer;
+                    }
+                    this.bufferHistoryPos = this.bufferHistory.length;
                     this.buffer = "";
                 }
                 else if (chr === String.fromCharCode(8)) {
@@ -54,6 +65,30 @@ var TSOS;
                         var removedChar = this.buffer.charAt(this.buffer.length - 1);
                         this.buffer = this.buffer.substring(0, this.buffer.length - 1);
                         this.removeChar(removedChar);
+                    }
+                }
+                else if (chr === String.fromCharCode(38)) {
+                    if (this.bufferHistoryPos > 0) {
+                        if (this.bufferHistoryPos == this.bufferHistory.length) {
+                            if (this.bufferHistory[this.bufferHistoryPos - 1] != this.buffer) {
+                                this.tempBuffer = this.buffer;
+                            }
+                        }
+                        this.bufferHistoryPos--;
+                        this.buffer = this.bufferHistory[this.bufferHistoryPos];
+                        console.log(this.buffer);
+                    }
+                }
+                else if (chr === String.fromCharCode(40)) {
+                    if (this.bufferHistoryPos < this.bufferHistory.length) {
+                        this.bufferHistoryPos++;
+                        if (this.bufferHistoryPos == this.bufferHistory.length) {
+                            this.buffer = this.tempBuffer;
+                        }
+                        else {
+                            this.buffer = this.bufferHistory[this.bufferHistoryPos];
+                        }
+                        console.log(this.buffer);
                     }
                 }
                 else {

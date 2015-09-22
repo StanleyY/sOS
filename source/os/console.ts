@@ -17,7 +17,10 @@ module TSOS {
                 public currentFontSize = _DefaultFontSize,
                 public currentXPosition = 0,
                 public currentYPosition = _DefaultFontSize,
-                public buffer = "") {
+                public buffer = "",
+                public tempBuffer = "",
+                public bufferHistory = [],
+                public bufferHistoryPos = -1) {
       this.lineHeight = _DefaultFontSize +
                         _DrawingContext.fontDescent(this.currentFont,
                                                     this.currentFontSize) +
@@ -47,7 +50,12 @@ module TSOS {
           // The enter key marks the end of a console command, so ...
           // ... tell the shell ...
           _OsShell.handleInput(this.buffer);
-          // ... and reset our buffer.
+          // ... and reset our buffer while storing it if it is different from
+          // the most recent history.
+          if (this.bufferHistory[this.bufferHistory.length - 1] != this.buffer) {
+            this.bufferHistory[this.bufferHistory.length] = this.buffer;
+          }
+          this.bufferHistoryPos = this.bufferHistory.length;
           this.buffer = "";
         } else if (chr === String.fromCharCode(8)) {  // Backspace
           // Check if buffer is empty or not
@@ -58,6 +66,27 @@ module TSOS {
                   0, this.buffer.length - 1);
 
               this.removeChar(removedChar);
+          }
+        } else if (chr === String.fromCharCode(38)) {  // Up Arrow
+          if (this.bufferHistoryPos > 0) {
+            if (this.bufferHistoryPos == this.bufferHistory.length) {
+              if (this.bufferHistory[this.bufferHistoryPos - 1] != this.buffer) {
+                this.tempBuffer = this.buffer;
+              }
+            }
+            this.bufferHistoryPos--;
+            this.buffer = this.bufferHistory[this.bufferHistoryPos];
+            console.log(this.buffer);
+          }
+        } else if (chr === String.fromCharCode(40)) {  // Up Arrow
+          if (this.bufferHistoryPos < this.bufferHistory.length) {
+            this.bufferHistoryPos++;
+            if (this.bufferHistoryPos == this.bufferHistory.length) {
+              this.buffer = this.tempBuffer;
+            } else {
+              this.buffer = this.bufferHistory[this.bufferHistoryPos];
+            }
+            console.log(this.buffer);
           }
         } else {
           // This is a "normal" character, so ...
