@@ -65,8 +65,8 @@ var TSOS;
             //status
             sc = new TSOS.ShellCommand(this.shellStatus, "status", "- updates taskbar status.");
             this.commandList[this.commandList.length] = sc;
-            //validate
-            sc = new TSOS.ShellCommand(this.shellValidate, "validate", "- validates the values inside of Program Input.");
+            //load
+            sc = new TSOS.ShellCommand(this.shellLoad, "load", "- validates the values inside of Program Input.");
             this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -296,7 +296,7 @@ var TSOS;
                 _StdOut.putText("Usage: status <string>  Please supply a string.");
             }
         };
-        Shell.prototype.shellValidate = function (args) {
+        Shell.prototype.shellLoad = function (args) {
             var regex = /^[0-9A-F ]*$/g;
             if (_ProgramInput.value.match(regex)) {
                 _StdOut.putText("Input is validate");

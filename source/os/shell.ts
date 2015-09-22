@@ -111,9 +111,9 @@ module TSOS {
                             "- updates taskbar status.");
       this.commandList[this.commandList.length] = sc;
 
-      //validate
-      sc = new ShellCommand(this.shellValidate,
-                            "validate",
+      //load
+      sc = new ShellCommand(this.shellLoad,
+                            "load",
                             "- validates the values inside of Program Input.");
       this.commandList[this.commandList.length] = sc;
       // ps  - list the running processes and their IDs
@@ -358,7 +358,7 @@ module TSOS {
       }
     }
 
-    public shellValidate(args) {
+    public shellLoad(args) {
       var regex = /^[0-9A-F ]*$/g;
       if (_ProgramInput.value.match(regex)) {
         _StdOut.putText("Input is validate");
