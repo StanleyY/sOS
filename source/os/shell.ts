@@ -20,6 +20,7 @@ module TSOS {
     // Properties
     public promptStr = ">";
     public commandList = [];
+    public commandListNames = []; // A sorted array of command names.
     public curses = "[fuvg],[cvff],[shpx],[phag],[pbpxfhpxre],[zbgureshpxre],[gvgf]";
     public apologies = "[sorry]";
 
@@ -91,6 +92,10 @@ module TSOS {
       //
       // Display the initial prompt.
       this.putPrompt();
+      // Generates the command names.
+      this.commandListNames = this.commandList.map(function(obj){
+        return obj.command;
+      }).sort();
     }
 
     public putPrompt() {

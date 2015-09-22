@@ -67,9 +67,13 @@ var TSOS;
                         this.removeChar(removedChar);
                     }
                 }
+                else if (chr === String.fromCharCode(9)) {
+                    this.autoComplete();
+                }
                 else if (chr === String.fromCharCode(38)) {
                     if (this.bufferHistoryPos > 0) {
                         if (this.bufferHistoryPos == this.bufferHistory.length) {
+                            // Store what was newly entered but not executed.
                             if (this.bufferHistory[this.bufferHistoryPos - 1] != this.buffer) {
                                 this.tempBuffer = this.buffer;
                             }
@@ -99,6 +103,11 @@ var TSOS;
                     this.buffer += chr;
                 }
             }
+        };
+        Console.prototype.autoComplete = function () {
+            var output = _OsShell.commandListNames.filter(function (name) {
+                return name.startsWith(this.buffer);
+            }.bind(this));
         };
         Console.prototype.putText = function (text) {
             // My first inclination here was to write two functions: putChar() and putString().

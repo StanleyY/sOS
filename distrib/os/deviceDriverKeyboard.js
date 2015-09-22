@@ -51,7 +51,8 @@ var TSOS;
                 (keyCode == 40) ||
                 (keyCode == 32) ||
                 (keyCode == 13) ||
-                (keyCode == 8)) {
+                (keyCode == 8) ||
+                (keyCode == 9)) {
                 chr = String.fromCharCode(keyCode);
                 _KernelInputQueue.enqueue(chr);
             }

@@ -18,6 +18,7 @@ var TSOS;
             // Properties
             this.promptStr = ">";
             this.commandList = [];
+            this.commandListNames = []; // A sorted array of command names.
             this.curses = "[fuvg],[cvff],[shpx],[phag],[pbpxfhpxre],[zbgureshpxre],[gvgf]";
             this.apologies = "[sorry]";
         }
@@ -57,6 +58,10 @@ var TSOS;
             //
             // Display the initial prompt.
             this.putPrompt();
+            // Generates the command names.
+            this.commandListNames = this.commandList.map(function (obj) {
+                return obj.command;
+            }).sort();
         };
         Shell.prototype.putPrompt = function () {
             _StdOut.putText(this.promptStr);

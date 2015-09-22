@@ -67,9 +67,12 @@ module TSOS {
 
               this.removeChar(removedChar);
           }
+        } else if (chr === String.fromCharCode(9)) {  // Tab
+          this.autoComplete();
         } else if (chr === String.fromCharCode(38)) {  // Up Arrow
           if (this.bufferHistoryPos > 0) {
             if (this.bufferHistoryPos == this.bufferHistory.length) {
+              // Store what was newly entered but not executed.
               if (this.bufferHistory[this.bufferHistoryPos - 1] != this.buffer) {
                 this.tempBuffer = this.buffer;
               }
@@ -97,6 +100,12 @@ module TSOS {
         }
         // TODO: Write a case for Ctrl-C.
       }
+    }
+
+    public autoComplete(): void {
+      var output = _OsShell.commandListNames.filter(function(name){
+        return name.startsWith(this.buffer);
+      }.bind(this));
     }
 
     public putText(text): void {
