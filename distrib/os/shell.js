@@ -53,6 +53,9 @@ var TSOS;
             //bsod
             sc = new TSOS.ShellCommand(this.shellBSOD, "bsod", "- display the error page.");
             this.commandList[this.commandList.length] = sc;
+            //date
+            sc = new TSOS.ShellCommand(this.shellDate, "date", "- display the date.");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             //
@@ -256,6 +259,10 @@ var TSOS;
         };
         Shell.prototype.shellBSOD = function (args) {
             TSOS.Utils.bsod();
+        };
+        Shell.prototype.shellDate = function (args) {
+            var d = new Date();
+            _StdOut.putText(d.getMonth() + "/" + d.getDate() + "/" + d.getFullYear());
         };
         return Shell;
     })();

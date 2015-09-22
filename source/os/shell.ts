@@ -86,6 +86,11 @@ module TSOS {
                             "- display the error page.");
       this.commandList[this.commandList.length] = sc;
 
+      //date
+      sc = new ShellCommand(this.shellDate,
+                            "date",
+                            "- display the date.");
+      this.commandList[this.commandList.length] = sc;
       // ps  - list the running processes and their IDs
       // kill <id> - kills the specified process id.
 
@@ -300,6 +305,11 @@ module TSOS {
 
     public shellBSOD(args) {
       Utils.bsod();
+    }
+
+    public shellDate(args) {
+      var d = new Date();
+      _StdOut.putText(d.getMonth() + "/" + d.getDate() + "/" + d.getFullYear());
     }
 
   }
