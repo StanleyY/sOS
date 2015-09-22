@@ -56,5 +56,11 @@ module TSOS {
       Control.hostBtnHaltOS_click('void');
       throw "BSOD!";
     }
+
+    public static updateTaskbar(): void {
+      var t = new Date();
+      _TaskBar.value = "Status: " + _TaskBarStatus +"\nTime: " +
+          t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds();
+    }
   }
 }

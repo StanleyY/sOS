@@ -91,15 +91,24 @@ module TSOS {
                             "date",
                             "- display the date.");
       this.commandList[this.commandList.length] = sc;
+
       //coinflip
       sc = new ShellCommand(this.shellCoinflip,
                             "coinflip",
                             "- flips a coin.");
       this.commandList[this.commandList.length] = sc;
+
+
       //whereami
       sc = new ShellCommand(this.shellWhereAmI,
                             "whereami",
                             "- gets your location.");
+      this.commandList[this.commandList.length] = sc;
+
+      //status
+      sc = new ShellCommand(this.shellStatus,
+                            "status",
+                            "- updates taskbar status.");
       this.commandList[this.commandList.length] = sc;
       // ps  - list the running processes and their IDs
       // kill <id> - kills the specified process id.
@@ -333,6 +342,14 @@ module TSOS {
 
     public shellWhereAmI(args) {
       _StdOut.putText("good question.");
+    }
+
+    public shellStatus(args) {
+      if (args.length == 1) {
+        _TaskBarStatus = args[0];
+      } else {
+        _StdOut.putText("Usage: status <string>  Please supply a string.");
+      }
     }
   }
 }

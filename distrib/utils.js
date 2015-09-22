@@ -56,6 +56,11 @@ var TSOS;
             TSOS.Control.hostBtnHaltOS_click('void');
             throw "BSOD!";
         };
+        Utils.updateTaskbar = function () {
+            var t = new Date();
+            _TaskBar.value = "Status: " + _TaskBarStatus + "\nTime: " +
+                t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds();
+        };
         return Utils;
     })();
     TSOS.Utils = Utils;
