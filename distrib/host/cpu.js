@@ -65,6 +65,10 @@ var TSOS;
             this.PC++;
             return temp;
         };
+        // Index is in decimal
+        Cpu.prototype.readMemValue = function (index) {
+            return TSOS.Utils.parseHex(_MMU.fetch(index));
+        };
         Cpu.prototype.opCodeLookup = function (opCode) {
             if (opCode == "A9") {
                 this.loadAcc();
@@ -74,6 +78,9 @@ var TSOS;
             }
             else if (opCode == "8D") {
                 this.storeAcc();
+            }
+            else if (opCode == "6D") {
+                this.addAcc();
             }
             else if (opCode == "A2") {
                 this.loadX();
@@ -96,7 +103,7 @@ var TSOS;
         };
         Cpu.prototype.loadAccFromMem = function () {
             var memLocation = this.readNextMemValue();
-            this.Acc = TSOS.Utils.parseHex(_MMU.fetch(memLocation));
+            this.Acc = this.readMemValue(memLocation);
         };
         Cpu.prototype.loadX = function () {
             this.Xreg = this.readNextMemValue();
@@ -107,6 +114,10 @@ var TSOS;
         Cpu.prototype.storeAcc = function () {
             var memLocation = this.readNextMemValue();
             _MMU.write(TSOS.Utils.intToHex(this.Acc), memLocation);
+        };
+        Cpu.prototype.addAcc = function () {
+            var memLocation = this.readNextMemValue();
+            this.Acc += this.readMemValue(memLocation);
         };
         Cpu.prototype.sysCall = function () {
             if (this.Xreg == 1) {

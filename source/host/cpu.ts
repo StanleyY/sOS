@@ -67,6 +67,11 @@ module TSOS {
       return temp;
     }
 
+    // Index is in decimal
+    public readMemValue(index): number {
+      return Utils.parseHex(_MMU.fetch(index));
+    }
+
     public opCodeLookup(opCode) {
       if(opCode == "A9") {
         this.loadAcc();
@@ -74,6 +79,8 @@ module TSOS {
         this.loadAccFromMem();
       } else if (opCode == "8D") {
         this.storeAcc();
+      } else if (opCode == "6D") {
+        this.addAcc();
       } else if (opCode == "A2") {
         this.loadX();
       } else if (opCode == "A0") {
@@ -93,7 +100,7 @@ module TSOS {
 
     public loadAccFromMem() {
       var memLocation = this.readNextMemValue();
-      this.Acc = Utils.parseHex(_MMU.fetch(memLocation));
+      this.Acc = this.readMemValue(memLocation);
     }
 
     public loadX() {
@@ -107,6 +114,11 @@ module TSOS {
     public storeAcc() {
       var memLocation = this.readNextMemValue();
       _MMU.write(Utils.intToHex(this.Acc), memLocation);
+    }
+
+    public addAcc() {
+      var memLocation = this.readNextMemValue();
+      this.Acc += this.readMemValue(memLocation);
     }
 
     public sysCall() {
