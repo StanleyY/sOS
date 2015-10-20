@@ -119,7 +119,7 @@ module TSOS {
       } else if (opCode == "FF") {
         this.sysCall();
       } else if (opCode == "00") {
-        this.init();  // Break
+        this.abort("");  // Break
       } else {
         this.abort("Unknown Operation, Aborting.");
       }
@@ -175,6 +175,7 @@ module TSOS {
       var n = this.readNextMemValue();
       if (this.Zflag == 0) {
         this.PC += n;
+        this.PC = this.PC % 256;  // For branches that wrap around
       }
     }
 
@@ -187,7 +188,13 @@ module TSOS {
       if (this.Xreg == 1) {
         _Console.putText("" + this.Yreg);
       } else if (this.Xreg == 2) {
-
+        var address = this.Yreg;
+        var char = this.readMemValue(address);
+        while(address < 256 &&  char != 0) {
+          _StdOut.putText(String.fromCharCode(char));
+          address++;
+          char = this.readMemValue(address);
+        }
       } else {
         this.abort("Invalid Sys Call, Aborting.");
       }
