@@ -62,6 +62,9 @@ var TSOS;
                 t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds() +
                 "\nDate: " + t.getMonth() + "/" + t.getDate() + "/" + t.getFullYear();
         };
+        Utils.parseHex = function (hex) {
+            return parseInt(hex, 16);
+        };
         return Utils;
     })();
     TSOS.Utils = Utils;

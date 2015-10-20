@@ -14,6 +14,12 @@ var TSOS;
             }
             this.updateDisplay();
         };
+        MemoryManager.prototype.fetchByHex = function (hexIndex) {
+            return this.fetch(parseInt(hexIndex, 16));
+        };
+        MemoryManager.prototype.fetch = function (index) {
+            return _Memory.memory[index];
+        };
         MemoryManager.prototype.updateDisplay = function () {
             _MemoryDisplay.value = _Memory.memory.join(" ");
         };

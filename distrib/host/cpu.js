@@ -42,6 +42,55 @@ var TSOS;
             _Kernel.krnTrace('CPU cycle');
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
+            if (this.isExecuting) {
+                var opCode = this.readNextMemValue();
+                this.opCodeLookup(opCode);
+            }
+        };
+        Cpu.prototype.readNextMemValue = function () {
+            var temp = _MMU.fetch(this.PC);
+            this.PC++;
+            return TSOS.Utils.parseHex(temp);
+        };
+        Cpu.prototype.opCodeLookup = function (opCode) {
+            if (opCode == "A9") {
+                this.loadAcc();
+            }
+            else if (opCode == "A2") {
+                this.loadX();
+            }
+            else if (opCode == "A0") {
+                this.loadY();
+            }
+            else if (opCode == "FF") {
+                this.sysCall();
+            }
+            else if (opCode == "00") {
+                this.isExecuting = false;
+            }
+            else {
+                throw "ILLEGAL OPERATION";
+            }
+        };
+        Cpu.prototype.loadAcc = function () {
+            this.Acc = this.readNextMemValue();
+        };
+        Cpu.prototype.loadX = function () {
+            this.Xreg = this.readNextMemValue();
+        };
+        Cpu.prototype.loadY = function () {
+            this.Yreg = this.readNextMemValue();
+        };
+        Cpu.prototype.sysCall = function () {
+            var val = this.readNextMemValue();
+            if (val == 1) {
+                _Console.putText(this.Yreg);
+            }
+            else if (val == 2) {
+            }
+            else {
+                throw "INVALID";
+            }
         };
         return Cpu;
     })();

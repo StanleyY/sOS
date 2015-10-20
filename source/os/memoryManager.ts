@@ -16,6 +16,14 @@ module TSOS {
       this.updateDisplay();
     }
 
+    public fetchByHex(hexIndex): number {
+      return this.fetch(parseInt(hexIndex, 16));
+    }
+
+    public fetch(index): number {
+      return _Memory.memory[index];
+    }
+
     public updateDisplay() {
       _MemoryDisplay.value = _Memory.memory.join(" ");
     }

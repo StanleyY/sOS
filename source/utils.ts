@@ -63,5 +63,9 @@ module TSOS {
           t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds() +
           "\nDate: " + t.getMonth() + "/" + t.getDate() + "/" + t.getFullYear();
     }
+
+    public static parseHex(hex): number {
+      return parseInt(hex, 16);
+    }
   }
 }
