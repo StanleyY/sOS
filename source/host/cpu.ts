@@ -67,6 +67,14 @@ module TSOS {
       return temp;
     }
 
+    public readNextTwoMemValues(): number {
+      var temp = _MMU.fetch(this.PC);
+      this.PC++;
+      temp = _MMU.fetch(this.PC) + temp;  // Big Endian
+      this.PC++;
+      return Utils.parseHex(temp);
+    }
+
     // Index is in decimal
     public readMemValue(index): number {
       return Utils.parseHex(_MMU.fetch(index));
@@ -91,6 +99,8 @@ module TSOS {
         this.loadYFromMem();
       } else if (opCode == "EA") {
         // No Op
+      } else if (opCode == "EC") {
+        this.compareX();
       } else if (opCode == "FF") {
         this.sysCall();
       } else if (opCode == "00") {
@@ -105,7 +115,7 @@ module TSOS {
     }
 
     public loadAccFromMem() {
-      var memLocation = this.readNextMemValue();
+      var memLocation = this.readNextTwoMemValues();
       this.Acc = this.readMemValue(memLocation);
     }
 
@@ -114,7 +124,7 @@ module TSOS {
     }
 
     public loadXFromMem() {
-      var memLocation = this.readNextMemValue();
+      var memLocation = this.readNextTwoMemValues();
       this.Xreg = this.readMemValue(memLocation);
     }
 
@@ -123,18 +133,27 @@ module TSOS {
     }
 
     public loadYFromMem() {
-      var memLocation = this.readNextMemValue();
+      var memLocation = this.readNextTwoMemValues();
       this.Yreg = this.readMemValue(memLocation);
     }
 
     public storeAcc() {
-      var memLocation = this.readNextMemValue();
+      var memLocation = this.readNextTwoMemValues();
       _MMU.write(Utils.intToHex(this.Acc), memLocation);
     }
 
     public addAcc() {
-      var memLocation = this.readNextMemValue();
+      var memLocation = this.readNextTwoMemValues();
       this.Acc += this.readMemValue(memLocation);
+    }
+
+    public compareX() {
+      var memLocation = this.readNextTwoMemValues();
+      if(this.readMemValue(memLocation) == this.Xreg) {
+        this.Zflag = 1;
+      } else {
+        this.Zflag = 0;
+      }
     }
 
     public sysCall() {

@@ -65,6 +65,13 @@ var TSOS;
             this.PC++;
             return temp;
         };
+        Cpu.prototype.readNextTwoMemValues = function () {
+            var temp = _MMU.fetch(this.PC);
+            this.PC++;
+            temp = _MMU.fetch(this.PC) + temp; // Big Endian
+            this.PC++;
+            return TSOS.Utils.parseHex(temp);
+        };
         // Index is in decimal
         Cpu.prototype.readMemValue = function (index) {
             return TSOS.Utils.parseHex(_MMU.fetch(index));
@@ -96,6 +103,9 @@ var TSOS;
             }
             else if (opCode == "EA") {
             }
+            else if (opCode == "EC") {
+                this.compareX();
+            }
             else if (opCode == "FF") {
                 this.sysCall();
             }
@@ -110,30 +120,39 @@ var TSOS;
             this.Acc = this.readNextMemValue();
         };
         Cpu.prototype.loadAccFromMem = function () {
-            var memLocation = this.readNextMemValue();
+            var memLocation = this.readNextTwoMemValues();
             this.Acc = this.readMemValue(memLocation);
         };
         Cpu.prototype.loadX = function () {
             this.Xreg = this.readNextMemValue();
         };
         Cpu.prototype.loadXFromMem = function () {
-            var memLocation = this.readNextMemValue();
+            var memLocation = this.readNextTwoMemValues();
             this.Xreg = this.readMemValue(memLocation);
         };
         Cpu.prototype.loadY = function () {
             this.Yreg = this.readNextMemValue();
         };
         Cpu.prototype.loadYFromMem = function () {
-            var memLocation = this.readNextMemValue();
+            var memLocation = this.readNextTwoMemValues();
             this.Yreg = this.readMemValue(memLocation);
         };
         Cpu.prototype.storeAcc = function () {
-            var memLocation = this.readNextMemValue();
+            var memLocation = this.readNextTwoMemValues();
             _MMU.write(TSOS.Utils.intToHex(this.Acc), memLocation);
         };
         Cpu.prototype.addAcc = function () {
-            var memLocation = this.readNextMemValue();
+            var memLocation = this.readNextTwoMemValues();
             this.Acc += this.readMemValue(memLocation);
+        };
+        Cpu.prototype.compareX = function () {
+            var memLocation = this.readNextTwoMemValues();
+            if (this.readMemValue(memLocation) == this.Xreg) {
+                this.Zflag = 1;
+            }
+            else {
+                this.Zflag = 0;
+            }
         };
         Cpu.prototype.sysCall = function () {
             if (this.Xreg == 1) {
