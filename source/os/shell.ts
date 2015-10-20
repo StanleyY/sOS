@@ -365,9 +365,10 @@ module TSOS {
 
     public shellLoad(args) {
       var regex = /^[0-9A-F ]+$/g;
+      _ProgramInput.value = _ProgramInput.value.toUpperCase();
       var input = _ProgramInput.value;
       if (input.match(regex) && input.replace(/\s+/g, '').length % 2 == 0) {
-        _MMU.write(input.replace(/\s+/g, ''), "00");
+        _MMU.write(input.replace(/\s+/g, ''), 0);  // Write to first index.
         _StdOut.putText("Loaded to PID: " + _PID);
         _PID++;
       } else {

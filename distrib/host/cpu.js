@@ -69,6 +69,12 @@ var TSOS;
             if (opCode == "A9") {
                 this.loadAcc();
             }
+            else if (opCode == "AD") {
+                this.loadAccFromMem();
+            }
+            else if (opCode == "8D") {
+                this.storeAcc();
+            }
             else if (opCode == "A2") {
                 this.loadX();
             }
@@ -79,7 +85,7 @@ var TSOS;
                 this.sysCall();
             }
             else if (opCode == "00") {
-                this.isExecuting = false;
+                this.init();
             }
             else {
                 throw "ILLEGAL OPERATION";
@@ -88,11 +94,19 @@ var TSOS;
         Cpu.prototype.loadAcc = function () {
             this.Acc = this.readNextMemValue();
         };
+        Cpu.prototype.loadAccFromMem = function () {
+            var memLocation = this.readNextMemValue();
+            this.Acc = TSOS.Utils.parseHex(_MMU.fetch(memLocation));
+        };
         Cpu.prototype.loadX = function () {
             this.Xreg = this.readNextMemValue();
         };
         Cpu.prototype.loadY = function () {
             this.Yreg = this.readNextMemValue();
+        };
+        Cpu.prototype.storeAcc = function () {
+            var memLocation = this.readNextMemValue();
+            _MMU.write(TSOS.Utils.intToHex(this.Acc), memLocation);
         };
         Cpu.prototype.sysCall = function () {
             if (this.Xreg == 1) {

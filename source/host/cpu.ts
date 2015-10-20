@@ -70,6 +70,10 @@ module TSOS {
     public opCodeLookup(opCode) {
       if(opCode == "A9") {
         this.loadAcc();
+      } else if (opCode == "AD") {
+        this.loadAccFromMem();
+      } else if (opCode == "8D") {
+        this.storeAcc();
       } else if (opCode == "A2") {
         this.loadX();
       } else if (opCode == "A0") {
@@ -77,7 +81,7 @@ module TSOS {
       } else if (opCode == "FF") {
         this.sysCall();
       } else if (opCode == "00") {
-        this.isExecuting = false;
+        this.init();
       } else {
         throw "ILLEGAL OPERATION"
       }
@@ -87,12 +91,22 @@ module TSOS {
       this.Acc = this.readNextMemValue();
     }
 
+    public loadAccFromMem() {
+      var memLocation = this.readNextMemValue();
+      this.Acc = Utils.parseHex(_MMU.fetch(memLocation));
+    }
+
     public loadX() {
       this.Xreg = this.readNextMemValue();
     }
 
     public loadY() {
       this.Yreg = this.readNextMemValue();
+    }
+
+    public storeAcc() {
+      var memLocation = this.readNextMemValue();
+      _MMU.write(Utils.intToHex(this.Acc), memLocation);
     }
 
     public sysCall() {

@@ -65,6 +65,12 @@ var TSOS;
         Utils.parseHex = function (hex) {
             return parseInt(hex, 16);
         };
+        Utils.intToHex = function (int) {
+            var temp = int.toString(16).toUpperCase();
+            if (temp.length == 1)
+                temp = "0" + temp;
+            return temp;
+        };
         return Utils;
     })();
     TSOS.Utils = Utils;

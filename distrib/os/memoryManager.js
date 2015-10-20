@@ -5,9 +5,8 @@ var TSOS;
         function MemoryManager() {
             this.updateDisplay();
         }
-        // bytes are the bytes to write. Index is in hex
+        // bytes are the bytes to write. Index is in dec
         MemoryManager.prototype.write = function (bytes, index) {
-            index = parseInt(index, 16); // Convert hex to decimal.
             for (var i = 0; i < bytes.length; i = i + 2) {
                 _Memory.memory[index] = bytes.substring(i, i + 2);
                 index++;

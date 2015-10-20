@@ -6,9 +6,8 @@ module TSOS {
       this.updateDisplay();
     }
 
-    // bytes are the bytes to write. Index is in hex
+    // bytes are the bytes to write. Index is in dec
     public write(bytes, index): void {
-      index = parseInt(index, 16); // Convert hex to decimal.
       for(var i = 0; i < bytes.length; i = i + 2) {
         _Memory.memory[index] = bytes.substring(i, i+2);
         index++;

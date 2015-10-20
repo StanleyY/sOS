@@ -67,5 +67,11 @@ module TSOS {
     public static parseHex(hex): number {
       return parseInt(hex, 16);
     }
+
+    public static intToHex(int): string {
+      var temp = int.toString(16).toUpperCase();
+      if (temp.length == 1) temp = "0" + temp;
+      return temp;
+    }
   }
 }
