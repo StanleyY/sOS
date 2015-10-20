@@ -112,6 +112,8 @@ module TSOS {
         // No Op
       } else if (opCode == "EC") {
         this.compareX();
+      } else if (opCode == "D0") {
+        this.branch();
       } else if (opCode == "FF") {
         this.sysCall();
       } else if (opCode == "00") {
@@ -164,6 +166,13 @@ module TSOS {
         this.Zflag = 1;
       } else {
         this.Zflag = 0;
+      }
+    }
+
+    public branch() {
+      var n = this.readNextMemValue();
+      if (this.Zflag == 0) {
+        this.PC += n;
       }
     }
 

@@ -115,6 +115,9 @@ var TSOS;
             else if (opCode == "EC") {
                 this.compareX();
             }
+            else if (opCode == "D0") {
+                this.branch();
+            }
             else if (opCode == "FF") {
                 this.sysCall();
             }
@@ -161,6 +164,12 @@ var TSOS;
             }
             else {
                 this.Zflag = 0;
+            }
+        };
+        Cpu.prototype.branch = function () {
+            var n = this.readNextMemValue();
+            if (this.Zflag == 0) {
+                this.PC += n;
             }
         };
         Cpu.prototype.sysCall = function () {
