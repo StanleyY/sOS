@@ -1,3 +1,4 @@
+///<reference path="../globals.ts" />
 var TSOS;
 (function (TSOS) {
     var MemoryManager = (function () {
@@ -7,8 +8,13 @@ var TSOS;
             for (var i = 0; i < 256; i++) {
                 this.memory.push("00");
             }
+            this.updateDisplay();
         }
         MemoryManager.prototype.write = function (bytes, index) {
+            console.log(this.memory);
+        };
+        MemoryManager.prototype.updateDisplay = function () {
+            _MemoryDisplay.value = this.memory.join(" ");
         };
         return MemoryManager;
     })();

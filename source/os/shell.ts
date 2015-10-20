@@ -362,7 +362,9 @@ module TSOS {
       var regex = /^[0-9A-F ]+$/g;
       var input = _ProgramInput.value;
       if (input.match(regex) && input.replace(/\s+/g, '').length % 2 == 0) {
-        _StdOut.putText("Input is validate");
+        _MMU.write("stuff", "stuff");
+        _StdOut.putText("Loaded to PID: " + _PID);
+        _PID++;
       } else {
         _StdOut.putText("Input is invalid.");
       }

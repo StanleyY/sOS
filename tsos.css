@@ -60,6 +60,11 @@ h3 {
 
 }
 
+#memoryDisplay{
+  resize: none;
+  overflow-y: scroll;
+}
+
 #taskBar {
   resize: none;
 }
