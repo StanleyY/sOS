@@ -85,14 +85,22 @@ var TSOS;
             else if (opCode == "A2") {
                 this.loadX();
             }
+            else if (opCode == "AE") {
+                this.loadXFromMem();
+            }
             else if (opCode == "A0") {
                 this.loadY();
+            }
+            else if (opCode == "AC") {
+                this.loadYFromMem();
+            }
+            else if (opCode == "EA") {
             }
             else if (opCode == "FF") {
                 this.sysCall();
             }
             else if (opCode == "00") {
-                this.init();
+                this.init(); // Break
             }
             else {
                 throw "ILLEGAL OPERATION";
@@ -108,8 +116,16 @@ var TSOS;
         Cpu.prototype.loadX = function () {
             this.Xreg = this.readNextMemValue();
         };
+        Cpu.prototype.loadXFromMem = function () {
+            var memLocation = this.readNextMemValue();
+            this.Xreg = this.readMemValue(memLocation);
+        };
         Cpu.prototype.loadY = function () {
             this.Yreg = this.readNextMemValue();
+        };
+        Cpu.prototype.loadYFromMem = function () {
+            var memLocation = this.readNextMemValue();
+            this.Yreg = this.readMemValue(memLocation);
         };
         Cpu.prototype.storeAcc = function () {
             var memLocation = this.readNextMemValue();

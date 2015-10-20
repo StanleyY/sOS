@@ -83,12 +83,18 @@ module TSOS {
         this.addAcc();
       } else if (opCode == "A2") {
         this.loadX();
+      } else if (opCode == "AE") {
+        this.loadXFromMem();
       } else if (opCode == "A0") {
         this.loadY();
+      } else if (opCode == "AC") {
+        this.loadYFromMem();
+      } else if (opCode == "EA") {
+        // No Op
       } else if (opCode == "FF") {
         this.sysCall();
       } else if (opCode == "00") {
-        this.init();
+        this.init();  // Break
       } else {
         throw "ILLEGAL OPERATION"
       }
@@ -107,8 +113,18 @@ module TSOS {
       this.Xreg = this.readNextMemValue();
     }
 
+    public loadXFromMem() {
+      var memLocation = this.readNextMemValue();
+      this.Xreg = this.readMemValue(memLocation);
+    }
+
     public loadY() {
       this.Yreg = this.readNextMemValue();
+    }
+
+    public loadYFromMem() {
+      var memLocation = this.readNextMemValue();
+      this.Yreg = this.readMemValue(memLocation);
     }
 
     public storeAcc() {
