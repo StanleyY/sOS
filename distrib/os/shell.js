@@ -300,7 +300,7 @@ var TSOS;
             var regex = /^[0-9A-F ]+$/g;
             var input = _ProgramInput.value;
             if (input.match(regex) && input.replace(/\s+/g, '').length % 2 == 0) {
-                _MMU.write("stuff", "stuff");
+                _MMU.write(input.replace(/\s+/g, ''), "00");
                 _StdOut.putText("Loaded to PID: " + _PID);
                 _PID++;
             }
