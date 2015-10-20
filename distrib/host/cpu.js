@@ -37,20 +37,33 @@ var TSOS;
             this.Yreg = 0;
             this.Zflag = 0;
             this.isExecuting = false;
+            this.updateDisplay();
+        };
+        Cpu.prototype.updateDisplay = function () {
+            var temp = "PC: " + this.PC + "\n" +
+                "Acc: " + this.Acc + "\n" +
+                "X reg: " + this.Xreg + "\n" +
+                "Y reg: " + this.Yreg + "\n" +
+                "Z flag: " + this.Zflag;
+            _CpuDisplay.value = temp;
         };
         Cpu.prototype.cycle = function () {
-            _Kernel.krnTrace('CPU cycle');
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
             if (this.isExecuting) {
-                var opCode = this.readNextMemValue();
+                _Kernel.krnTrace('CPU cycle');
+                var opCode = this.readNextMemValueInHex();
                 this.opCodeLookup(opCode);
+                this.updateDisplay();
             }
         };
         Cpu.prototype.readNextMemValue = function () {
+            return TSOS.Utils.parseHex(this.readNextMemValueInHex());
+        };
+        Cpu.prototype.readNextMemValueInHex = function () {
             var temp = _MMU.fetch(this.PC);
             this.PC++;
-            return TSOS.Utils.parseHex(temp);
+            return temp;
         };
         Cpu.prototype.opCodeLookup = function (opCode) {
             if (opCode == "A9") {
@@ -82,14 +95,13 @@ var TSOS;
             this.Yreg = this.readNextMemValue();
         };
         Cpu.prototype.sysCall = function () {
-            var val = this.readNextMemValue();
-            if (val == 1) {
-                _Console.putText(this.Yreg);
+            if (this.Xreg == 1) {
+                _Console.putText("" + this.Yreg);
             }
-            else if (val == 2) {
+            else if (this.Xreg == 2) {
             }
             else {
-                throw "INVALID";
+                throw "INVALID SYS CALL";
             }
         };
         return Cpu;

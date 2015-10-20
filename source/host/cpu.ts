@@ -34,22 +34,37 @@ module TSOS {
       this.Yreg = 0;
       this.Zflag = 0;
       this.isExecuting = false;
+      this.updateDisplay();
+    }
+
+    public updateDisplay(): void {
+      var temp = "PC: " + this.PC + "\n" +
+                 "Acc: " + this.Acc + "\n" +
+                 "X reg: " + this.Xreg + "\n" +
+                 "Y reg: " + this.Yreg + "\n" +
+                 "Z flag: " + this.Zflag;
+      _CpuDisplay.value = temp;
     }
 
     public cycle(): void {
-      _Kernel.krnTrace('CPU cycle');
       // TODO: Accumulate CPU usage and profiling statistics here.
       // Do the real work here. Be sure to set this.isExecuting appropriately.
       if (this.isExecuting) {
-        var opCode = this.readNextMemValue();
+        _Kernel.krnTrace('CPU cycle');
+        var opCode = this.readNextMemValueInHex();
         this.opCodeLookup(opCode);
+        this.updateDisplay();
       }
     }
 
     public readNextMemValue(): number {
+      return Utils.parseHex(this.readNextMemValueInHex());
+    }
+
+    public readNextMemValueInHex(): number {
       var temp = _MMU.fetch(this.PC);
       this.PC++;
-      return Utils.parseHex(temp);
+      return temp;
     }
 
     public opCodeLookup(opCode) {
@@ -81,13 +96,12 @@ module TSOS {
     }
 
     public sysCall() {
-      var val = this.readNextMemValue();
-      if (val == 1) {
-        _Console.putText(this.Yreg);
-      } else if (val == 2) {
+      if (this.Xreg == 1) {
+        _Console.putText("" + this.Yreg);
+      } else if (this.Xreg == 2) {
 
       } else {
-        throw "INVALID";
+        throw "INVALID SYS CALL";
       }
     }
   }

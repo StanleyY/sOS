@@ -66,7 +66,9 @@ var TSOS;
             sc = new TSOS.ShellCommand(this.shellStatus, "status", "- updates taskbar status.");
             this.commandList[this.commandList.length] = sc;
             //load
-            sc = new TSOS.ShellCommand(this.shellLoad, "load", "- validates the values inside of Program Input.");
+            sc = new TSOS.ShellCommand(this.shellLoad, "load", "- loads the value in program input into memory.");
+            this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellRun, "run", "- runs a given pid.");
             this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -306,6 +308,19 @@ var TSOS;
             }
             else {
                 _StdOut.putText("Input is invalid.");
+            }
+        };
+        Shell.prototype.shellRun = function (args) {
+            if (args.length == 1) {
+                if (args[0] == (_PID - 1)) {
+                    _CPU.isExecuting = true;
+                }
+                else {
+                    _StdOut.putText("Current only supports running the most recent PID which is " + (_PID - 1));
+                }
+            }
+            else {
+                _StdOut.putText("Usage: run <pid>");
             }
         };
         return Shell;

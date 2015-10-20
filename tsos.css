@@ -60,9 +60,21 @@ h3 {
 
 }
 
-#memoryDisplay{
+#memoryDisplay {
   resize: none;
   overflow-y: scroll;
+}
+
+#divMemoryDisplay {
+  display: inline-block;
+}
+
+#divCpuDisplay {
+  display: inline-block;
+}
+
+#cpuDisplay {
+  resize: none;
 }
 
 #taskBar {
