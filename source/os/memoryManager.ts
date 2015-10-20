@@ -8,11 +8,15 @@ module TSOS {
 
     // bytes are the bytes to write. Index is in dec
     public write(bytes, index): void {
-      for(var i = 0; i < bytes.length; i = i + 2) {
-        _Memory.memory[index] = bytes.substring(i, i+2);
-        index++;
+      if (index < 256 && index > -1) {
+        for(var i = 0; i < bytes.length; i = i + 2) {
+          _Memory.memory[index] = bytes.substring(i, i+2);
+          index++;
+        }
+        this.updateDisplay();
+      } else {
+        _CPU.illegalMemAccess();
       }
-      this.updateDisplay();
     }
 
     public fetchByHex(hexIndex): number {
@@ -20,7 +24,11 @@ module TSOS {
     }
 
     public fetch(index): number {
-      return _Memory.memory[index];
+      if (index < 256 && index > -1) {
+        return _Memory.memory[index];
+      } else {
+        _CPU.illegalMemAccess();
+      }
     }
 
     public updateDisplay() {

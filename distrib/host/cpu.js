@@ -47,6 +47,15 @@ var TSOS;
                 "Z flag: " + this.Zflag;
             _CpuDisplay.value = temp;
         };
+        Cpu.prototype.illegalMemAccess = function () {
+            this.abort("Out of bound memory access, Aborting.");
+        };
+        Cpu.prototype.abort = function (message) {
+            _StdOut.putText(message);
+            _Console.advanceLine();
+            _StdOut.putText(">");
+            this.init();
+        };
         Cpu.prototype.cycle = function () {
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
@@ -113,7 +122,7 @@ var TSOS;
                 this.init(); // Break
             }
             else {
-                throw "ILLEGAL OPERATION";
+                this.abort("Unknown Operation, Aborting.");
             }
         };
         Cpu.prototype.loadAcc = function () {
@@ -161,7 +170,7 @@ var TSOS;
             else if (this.Xreg == 2) {
             }
             else {
-                throw "INVALID SYS CALL";
+                this.abort("Invalid Sys Call, Aborting.");
             }
         };
         return Cpu;

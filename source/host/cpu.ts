@@ -46,6 +46,17 @@ module TSOS {
       _CpuDisplay.value = temp;
     }
 
+    public illegalMemAccess() {
+      this.abort("Out of bound memory access, Aborting.");
+    }
+
+    public abort(message) {
+      _StdOut.putText(message);
+      _Console.advanceLine();
+      _StdOut.putText(">");
+      this.init();
+    }
+
     public cycle(): void {
       // TODO: Accumulate CPU usage and profiling statistics here.
       // Do the real work here. Be sure to set this.isExecuting appropriately.
@@ -106,7 +117,7 @@ module TSOS {
       } else if (opCode == "00") {
         this.init();  // Break
       } else {
-        throw "ILLEGAL OPERATION"
+        this.abort("Unknown Operation, Aborting.");
       }
     }
 
@@ -162,7 +173,7 @@ module TSOS {
       } else if (this.Xreg == 2) {
 
       } else {
-        throw "INVALID SYS CALL";
+        this.abort("Invalid Sys Call, Aborting.");
       }
     }
   }
