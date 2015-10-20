@@ -77,6 +77,15 @@ h3 {
   resize: none;
 }
 
+#divPcbDisplay {
+  display: inline-block;
+}
+
+#pcbDisplay {
+  resize: none;
+  overflow-y: scroll;
+}
+
 #taskBar {
   resize: none;
 }

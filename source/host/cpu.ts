@@ -120,6 +120,7 @@ module TSOS {
         this.sysCall();
       } else if (opCode == "00") {
         this.abort("");  // Break
+        _PcbList = []; // TODO Remove by PID in project 3.
       } else {
         this.abort("Unknown Operation, Aborting.");
       }

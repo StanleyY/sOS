@@ -306,6 +306,7 @@ var TSOS;
             if (input.match(regex) && input.replace(/\s+/g, '').length % 2 == 0) {
                 _MMU.write(input.replace(/\s+/g, ''), 0); // Write to first index.
                 _StdOut.putText("Loaded to PID: " + _PID);
+                _PcbList = [new TSOS.PCB(_PID)]; // TODO: Turn this into push once I support more than one program.
                 _PID++;
             }
             else {
@@ -316,6 +317,7 @@ var TSOS;
             if (args.length == 1) {
                 if (args[0] == (_PID - 1)) {
                     _CPU.isExecuting = true;
+                    _PcbList[0].status = "Running"; // TODO: Look up PID and update status elegantly.
                 }
                 else {
                     _StdOut.putText("Current only supports running the most recent PID which is " + (_PID - 1));
