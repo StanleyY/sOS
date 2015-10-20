@@ -118,6 +118,9 @@ var TSOS;
             else if (opCode == "D0") {
                 this.branch();
             }
+            else if (opCode == "EE") {
+                this.incrementByte();
+            }
             else if (opCode == "FF") {
                 this.sysCall();
             }
@@ -171,6 +174,10 @@ var TSOS;
             if (this.Zflag == 0) {
                 this.PC += n;
             }
+        };
+        Cpu.prototype.incrementByte = function () {
+            var memLocation = this.readNextTwoMemValues();
+            _MMU.increment(memLocation);
         };
         Cpu.prototype.sysCall = function () {
             if (this.Xreg == 1) {

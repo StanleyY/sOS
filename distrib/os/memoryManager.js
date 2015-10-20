@@ -29,6 +29,16 @@ var TSOS;
                 _CPU.illegalMemAccess();
             }
         };
+        MemoryManager.prototype.increment = function (index) {
+            if (index < 256 && index > -1) {
+                var temp = TSOS.Utils.intToHex((TSOS.Utils.parseHex(_Memory.memory[index]) + 1));
+                _Memory.memory[index] = temp;
+            }
+            else {
+                _CPU.illegalMemAccess();
+            }
+            this.updateDisplay();
+        };
         MemoryManager.prototype.updateDisplay = function () {
             _MemoryDisplay.value = _Memory.memory.join(" ");
         };

@@ -31,6 +31,16 @@ module TSOS {
       }
     }
 
+    public increment(index): void {
+      if (index < 256 && index > -1) {
+        var temp = Utils.intToHex((Utils.parseHex(_Memory.memory[index]) + 1));
+        _Memory.memory[index] = temp;
+      } else {
+        _CPU.illegalMemAccess();
+      }
+      this.updateDisplay();
+    }
+
     public updateDisplay() {
       _MemoryDisplay.value = _Memory.memory.join(" ");
     }

@@ -114,6 +114,8 @@ module TSOS {
         this.compareX();
       } else if (opCode == "D0") {
         this.branch();
+      } else if (opCode == "EE") {
+        this.incrementByte();
       } else if (opCode == "FF") {
         this.sysCall();
       } else if (opCode == "00") {
@@ -174,6 +176,11 @@ module TSOS {
       if (this.Zflag == 0) {
         this.PC += n;
       }
+    }
+
+    public incrementByte() {
+      var memLocation = this.readNextTwoMemValues();
+      _MMU.increment(memLocation);
     }
 
     public sysCall() {
