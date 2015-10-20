@@ -27,9 +27,6 @@ var TSOS;
         // Hardware/Host Clock Pulse
         //
         Devices.hostClockPulse = function () {
-            // Increment the hardware (host) clock.
-            _OSclock++;
-            //_CPU.cycle();
             // Call the kernel clock pulse event handler.
             _Kernel.krnOnCPUClockPulse();
             TSOS.Utils.updateTaskbar();

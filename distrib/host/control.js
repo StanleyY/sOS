@@ -108,6 +108,13 @@ var TSOS;
             // be reloaded from the server. If it is false or not specified the browser may reload the
             // page from its cache, which is not what we want.
         };
+        Control.stepModeToggle = function (ckBox) {
+            _StepMode = ckBox.checked;
+            document.getElementById("btnStep").disabled = !_StepMode;
+        };
+        Control.hostBtnStep_click = function (btn) {
+            _Kernel.krnRunClockCycle();
+        };
         return Control;
     })();
     TSOS.Control = Control;

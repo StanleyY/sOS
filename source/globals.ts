@@ -58,6 +58,9 @@ var _ProgramInput;
 var _StdIn;    // Same "to null or not to null" issue as above.
 var _StdOut;
 
+// Step Mode
+var _StepMode = false;
+
 // Memory related globals.
 var _MMU: TSOS.MemoryManager;
 var _MemoryDisplay;

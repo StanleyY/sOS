@@ -131,5 +131,14 @@ module TSOS {
       // be reloaded from the server. If it is false or not specified the browser may reload the
       // page from its cache, which is not what we want.
     }
+
+    public static stepModeToggle(ckBox): void {
+      _StepMode = ckBox.checked;
+      (<HTMLButtonElement>document.getElementById("btnStep")).disabled = !_StepMode;
+    }
+
+    public static hostBtnStep_click(btn): void {
+      _Kernel.krnRunClockCycle();
+    }
   }
 }

@@ -43,6 +43,8 @@ var _ProgramInput;
 // Standard input and output
 var _StdIn; // Same "to null or not to null" issue as above.
 var _StdOut;
+// Step Mode
+var _StepMode = false;
 // Memory related globals.
 var _MMU;
 var _MemoryDisplay;
