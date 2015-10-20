@@ -16,14 +16,16 @@
 var TSOS;
 (function (TSOS) {
     var Cpu = (function () {
-        function Cpu(PC, Acc, Xreg, Yreg, Zflag, isExecuting) {
+        function Cpu(PC, IR, Acc, Xreg, Yreg, Zflag, isExecuting) {
             if (PC === void 0) { PC = 0; }
+            if (IR === void 0) { IR = "00"; }
             if (Acc === void 0) { Acc = 0; }
             if (Xreg === void 0) { Xreg = 0; }
             if (Yreg === void 0) { Yreg = 0; }
             if (Zflag === void 0) { Zflag = 0; }
             if (isExecuting === void 0) { isExecuting = false; }
             this.PC = PC;
+            this.IR = IR;
             this.Acc = Acc;
             this.Xreg = Xreg;
             this.Yreg = Yreg;
@@ -41,6 +43,7 @@ var TSOS;
         };
         Cpu.prototype.updateDisplay = function () {
             var temp = "PC: " + this.PC + "\n" +
+                "IR: 0x" + this.IR + "\n" +
                 "Acc: " + this.Acc + "\n" +
                 "X reg: " + this.Xreg + "\n" +
                 "Y reg: " + this.Yreg + "\n" +
@@ -86,6 +89,7 @@ var TSOS;
             return TSOS.Utils.parseHex(_MMU.fetch(index));
         };
         Cpu.prototype.opCodeLookup = function (opCode) {
+            this.IR = opCode;
             if (opCode == "A9") {
                 this.loadAcc();
             }

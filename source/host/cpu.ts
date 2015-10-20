@@ -20,6 +20,7 @@ module TSOS {
   export class Cpu {
 
     constructor(public PC: number = 0,
+                public IR: string = "00",
                 public Acc: number = 0,
                 public Xreg: number = 0,
                 public Yreg: number = 0,
@@ -39,6 +40,7 @@ module TSOS {
 
     public updateDisplay(): void {
       var temp = "PC: " + this.PC + "\n" +
+                 "IR: 0x" + this.IR + "\n" +
                  "Acc: " + this.Acc + "\n" +
                  "X reg: " + this.Xreg + "\n" +
                  "Y reg: " + this.Yreg + "\n" +
@@ -92,6 +94,7 @@ module TSOS {
     }
 
     public opCodeLookup(opCode) {
+      this.IR = opCode;
       if(opCode == "A9") {
         this.loadAcc();
       } else if (opCode == "AD") {
