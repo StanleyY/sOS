@@ -24,7 +24,6 @@ var _CPU; // Utilize TypeScript's type annotation system to ensure that _CPU is 
 var _OSclock = 0; // Page 23.
 var _PID = 0;
 var _Mode = 0; // (currently unused)  0 = Kernel Mode, 1 = User Mode.  See page 21.
-var _MMU;
 var _Canvas; // Initialized in Control.hostInit().
 var _DrawingContext; // = _Canvas.getContext("2d");  // Assigned here for type safety, but re-initialized in Control.hostInit() for OCD and logic.
 var _DefaultFontFamily = "sans"; // Ignored, I think. The was just a place-holder in 2008, but the HTML canvas may have use for it.
@@ -43,8 +42,10 @@ var _ProgramInput;
 // Standard input and output
 var _StdIn; // Same "to null or not to null" issue as above.
 var _StdOut;
-// Memory Display
+// Memory related globals.
+var _MMU;
 var _MemoryDisplay;
+var _Memory;
 // Taskbar
 var _TaskBar;
 var _TaskBarStatus = "Started";
