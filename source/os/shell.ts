@@ -360,7 +360,8 @@ module TSOS {
 
     public shellLoad(args) {
       var regex = /^[0-9A-F ]+$/g;
-      if (_ProgramInput.value.match(regex)) {
+      var input = _ProgramInput.value;
+      if (input.match(regex) && input.replace(/\s+/g, '').length % 2 == 0) {
         _StdOut.putText("Input is validate");
       } else {
         _StdOut.putText("Input is invalid.");
