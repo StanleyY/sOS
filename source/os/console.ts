@@ -214,16 +214,24 @@ module TSOS {
        */
       this.currentYPosition += this.lineHeight;
       if (this.currentYPosition > _Canvas.height) {
-        // When a canvas is resized, it gets wiped. The original image is saved,
-        // then restored after resizing.
-        var original_canvas = _Canvas.toDataURL();
-        _Canvas.height = this.currentYPosition + (this.lineHeight * 3);
-        var img = new Image();
-        img.src = original_canvas;
-        _DrawingContext.drawImage(img, 0, 0);
-        var consoleDiv = document.getElementById("divConsole");
-        consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        this.expandCanvas();
       }
+    }
+
+    public expandCanvas(): void {
+      // Expanding the Canvas causes it to be wiped.The original canvas is
+      // stored and then redrawn after the Canvas is resized.
+      var tempCanvas = document.createElement('canvas');
+      tempCanvas.width = _Canvas.width;
+      tempCanvas.height = _Canvas.height;
+      var tempContext = tempCanvas.getContext('2d');
+      tempContext.drawImage(_Canvas, 0, 0);
+
+      _Canvas.height += 100;
+
+      _DrawingContext.drawImage(tempCanvas, 0, 0);
+      var consoleDiv = document.getElementById("divConsole");
+      consoleDiv.scrollTop = consoleDiv.scrollHeight;
     }
   }
 }
