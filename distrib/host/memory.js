@@ -3,9 +3,9 @@ var TSOS;
 (function (TSOS) {
     var Memory = (function () {
         function Memory() {
-            // Memory is currently 256 bytes.
+            // Memory is currently 768 bytes.
             this.memory = [];
-            for (var i = 0; i < 256; i++) {
+            for (var i = 0; i < 768; i++) {
                 this.memory.push("00");
             }
         }

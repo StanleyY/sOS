@@ -8,7 +8,7 @@ module TSOS {
 
     // bytes are the bytes to write. Index is in dec
     public write(bytes, index): void {
-      if (index < 256 && index > -1) {
+      if (index < 768 && index > -1) {
         for(var i = 0; i < bytes.length; i = i + 2) {
           _Memory.memory[index] = bytes.substring(i, i+2);
           index++;
@@ -24,7 +24,7 @@ module TSOS {
     }
 
     public fetch(index): number {
-      if (index < 256 && index > -1) {
+      if (index < 768 && index > -1) {
         return _Memory.memory[index];
       } else {
         _CPU.illegalMemAccess();
@@ -32,7 +32,7 @@ module TSOS {
     }
 
     public increment(index): void {
-      if (index < 256 && index > -1) {
+      if (index < 768 && index > -1) {
         var temp = Utils.intToHex((Utils.parseHex(_Memory.memory[index]) + 1));
         _Memory.memory[index] = temp;
       } else {

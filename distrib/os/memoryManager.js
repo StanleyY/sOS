@@ -7,7 +7,7 @@ var TSOS;
         }
         // bytes are the bytes to write. Index is in dec
         MemoryManager.prototype.write = function (bytes, index) {
-            if (index < 256 && index > -1) {
+            if (index < 768 && index > -1) {
                 for (var i = 0; i < bytes.length; i = i + 2) {
                     _Memory.memory[index] = bytes.substring(i, i + 2);
                     index++;
@@ -22,7 +22,7 @@ var TSOS;
             return this.fetch(parseInt(hexIndex, 16));
         };
         MemoryManager.prototype.fetch = function (index) {
-            if (index < 256 && index > -1) {
+            if (index < 768 && index > -1) {
                 return _Memory.memory[index];
             }
             else {
@@ -30,7 +30,7 @@ var TSOS;
             }
         };
         MemoryManager.prototype.increment = function (index) {
-            if (index < 256 && index > -1) {
+            if (index < 768 && index > -1) {
                 var temp = TSOS.Utils.intToHex((TSOS.Utils.parseHex(_Memory.memory[index]) + 1));
                 _Memory.memory[index] = temp;
             }
