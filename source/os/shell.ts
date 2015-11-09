@@ -366,6 +366,7 @@ module TSOS {
     public shellLoad(args) {
       var regex = /^[0-9A-F ]+$/g;
       _ProgramInput.value = _ProgramInput.value.toUpperCase();
+      _ProgramInput.value = _ProgramInput.value.replace(/\s\t/g, '');
       var input = _ProgramInput.value;
       input = input.replace(/\n+/g, '');
       if (input.match(regex) && input.replace(/\s+/g, '').length % 2 == 0) {

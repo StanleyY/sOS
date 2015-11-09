@@ -35,6 +35,7 @@ module TSOS {
       _Kernel.krnOnCPUClockPulse();
       Utils.updateTaskbar();
       PCB.updatePcbDisplay();
+      _MMU.updateDisplay();
     }
 
     //

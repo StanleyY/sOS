@@ -31,6 +31,7 @@ var TSOS;
             _Kernel.krnOnCPUClockPulse();
             TSOS.Utils.updateTaskbar();
             TSOS.PCB.updatePcbDisplay();
+            _MMU.updateDisplay();
         };
         //
         // Keyboard Interrupt, a HARDWARE Interrupt Request. (See pages 560-561 in our text book.)

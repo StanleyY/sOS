@@ -60,9 +60,26 @@ h3 {
 
 }
 
-#memoryDisplay {
-  resize: none;
+#divMemoryDisplay {
+  height: 125px;
   overflow-y: scroll;
+}
+#memoryTable {
+  border-collapse: collapse;
+  background-color: white;
+}
+#memoryTable tr {
+  background-color: white;
+  border: 1px solid black;
+  display: block;
+}
+#memoryTable td {
+  border-left: 1px solid black;
+  width: 25px;
+}
+#memoryTable .titleCell {
+  border-right: 2px solid black;
+  width: 48px;
 }
 
 #divMemoryDisplay {

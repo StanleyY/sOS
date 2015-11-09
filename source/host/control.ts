@@ -43,7 +43,7 @@ module TSOS {
       _TaskBar = document.getElementById('taskBar');
 
       // Get a global reference to the memory display
-      _MemoryDisplay = document.getElementById('memoryDisplay');
+      _MemoryDisplay = <HTMLTableElement> document.getElementById('memoryTable');
       // Get a global reference to CPU display
       _CpuDisplay = document.getElementById('cpuDisplay');
       // Get a global reference to PCB display

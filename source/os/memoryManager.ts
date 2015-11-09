@@ -42,7 +42,17 @@ module TSOS {
     }
 
     public updateDisplay() {
-      _MemoryDisplay.value = _Memory.memory.join(" ");
+      _MemoryDisplay.innerHTML = ""; // Clear the table
+      for (var i = 0; i < _Memory.memory.length; i += 8) {
+        var row = <HTMLTableRowElement> _MemoryDisplay.insertRow();  // insert a new row at 0
+        var cell = row.insertCell();
+        cell.className = "titleCell";
+        cell.innerHTML = "0x" + Utils.intToHex(i);
+        for (var j = i; j < i + 8; j++) {
+          cell = row.insertCell();
+          cell.innerHTML = _Memory.memory[j];
+        }
+      }
     }
   }
 }
