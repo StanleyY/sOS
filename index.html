@@ -68,6 +68,14 @@
              value="Reset"
              tabindex="2"
              onclick="TSOS.Control.hostBtnReset_click(this);">
+      <input type="checkbox" id="stepModeToggle" onchange="TSOS.Control.stepModeToggle(this)">Step Mode
+      <input type="button"
+             id = "btnStep"
+             class="normal_button"
+             value="Step"
+             tabindex="4"
+             onclick="TSOS.Control.hostBtnStep_click(this);"
+             disabled>
    </div>
 
    <div id="divConsole">
@@ -79,15 +87,6 @@
    </div>
 
    <div id="divLog">
-      <input type="checkbox" id="stepModeToggle" onchange="TSOS.Control.stepModeToggle(this)">Step Mode
-      <input type="button"
-             id = "btnStep"
-             class="normal_button"
-             value="Step"
-             tabindex="4"
-             onclick="TSOS.Control.hostBtnStep_click(this);"
-             disabled>
-      <br>
       <label>
          Host Log
          <br>
