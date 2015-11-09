@@ -70,6 +70,8 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             sc = new TSOS.ShellCommand(this.shellRun, "run", "- runs a given pid.");
             this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellClearMem, "clearmem", "clears the memory.");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             //
@@ -326,6 +328,14 @@ var TSOS;
             }
             else {
                 _StdOut.putText("Usage: run <pid>");
+            }
+        };
+        Shell.prototype.shellClearMem = function (args) {
+            if (args.length == 0) {
+                _MMU.clearMemory();
+            }
+            else {
+                _StdOut.putText("clearmem takes no arguments");
             }
         };
         return Shell;

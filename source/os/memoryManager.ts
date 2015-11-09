@@ -6,6 +6,13 @@ module TSOS {
       this.updateDisplay();
     }
 
+    public clearMemory() {
+      _Memory.memory = [];
+      for (var i = 0; i < 768; i++) {
+        _Memory.memory.push("00");
+      }
+    }
+
     // bytes are the bytes to write. Index is in dec
     public write(bytes, index): void {
       if (index < 768 && index > -1) {
