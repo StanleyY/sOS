@@ -1,16 +1,16 @@
 ///<reference path="../globals.ts" />
 ///<reference path="queue.ts" />
 /* ------------
-     Kernel.ts
+   Kernel.ts
 
-     Requires globals.ts
-              queue.ts
+   Requires globals.ts
+        queue.ts
 
-     Routines for the Operating System, NOT the host.
+   Routines for the Operating System, NOT the host.
 
-     This code references page numbers in the text book:
-     Operating System Concepts 8th edition by Silberschatz, Galvin, and Gagne.  ISBN 978-0-470-12872-5
-     ------------ */
+   This code references page numbers in the text book:
+   Operating System Concepts 8th edition by Silberschatz, Galvin, and Gagne.  ISBN 978-0-470-12872-5
+   ------------ */
 var TSOS;
 (function (TSOS) {
     var Kernel = (function () {
@@ -69,7 +69,7 @@ var TSOS;
             /* This gets called from the host hardware simulation every time there is a hardware clock pulse.
                This is NOT the same as a TIMER, which causes an interrupt and is handled like other interrupts.
                This, on the other hand, is the clock pulse from the hardware / VM / host that tells the kernel
-               that it has to look for interrupts and process them if it finds any.                           */
+               that it has to look for interrupts and process them if it finds any.               */
             // Check for an interrupt, are any. Page 560
             if (_KernelInterruptQueue.getSize() > 0) {
                 // Process the first interrupt on the interrupt queue.
@@ -110,7 +110,7 @@ var TSOS;
             // Invoke the requested Interrupt Service Routine via Switch/Case rather than an Interrupt Vector.
             // TODO: Consider using an Interrupt Vector in the future.
             // Note: There is no need to "dismiss" or acknowledge the interrupts in our design here.
-            //       Maybe the hardware simulation will grow to support/require that in the future.
+            //     Maybe the hardware simulation will grow to support/require that in the future.
             switch (irq) {
                 case TIMER_IRQ:
                     this.krnTimerISR(); // Kernel built-in routine for timers (not the clock).
