@@ -73,5 +73,12 @@ module TSOS {
       if (temp.length == 1) temp = "0" + temp;
       return temp;
     }
+
+    public static cleanInput(): void {
+      var programInput = <HTMLTextAreaElement> document.getElementById('taProgramInput');
+      programInput.value = programInput.value.toUpperCase();
+      programInput.value = programInput.value.replace(/[\s\t\n]/g, '');
+      programInput.value = programInput.value.replace(/(\S\S)/g, '$1 ');
+    }
   }
 }

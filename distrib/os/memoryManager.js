@@ -18,7 +18,6 @@ var TSOS;
                 return -1;
             }
             this.write(bytes, this.availableParitions.shift() * 256);
-            console.log(this.availableParitions.length);
             _PID++;
             return _PID - 1;
         };

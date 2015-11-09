@@ -71,6 +71,12 @@ var TSOS;
                 temp = "0" + temp;
             return temp;
         };
+        Utils.cleanInput = function () {
+            var programInput = document.getElementById('taProgramInput');
+            programInput.value = programInput.value.toUpperCase();
+            programInput.value = programInput.value.replace(/[\s\t\n]/g, '');
+            programInput.value = programInput.value.replace(/(\S\S)/g, '$1 ');
+        };
         return Utils;
     })();
     TSOS.Utils = Utils;
