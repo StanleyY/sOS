@@ -3,13 +3,24 @@ var TSOS;
 (function (TSOS) {
     var MemoryManager = (function () {
         function MemoryManager() {
+            this.availableParitions = [0, 1, 2];
             this.updateDisplay();
         }
         MemoryManager.prototype.clearMemory = function () {
+            this.availableParitions = [0, 1, 2];
             _Memory.memory = [];
             for (var i = 0; i < 768; i++) {
                 _Memory.memory.push("00");
             }
+        };
+        MemoryManager.prototype.loadProgram = function (bytes) {
+            if (this.availableParitions.length < 1) {
+                return -1;
+            }
+            this.write(bytes, this.availableParitions.shift() * 256);
+            console.log(this.availableParitions.length);
+            _PID++;
+            return _PID - 1;
         };
         // bytes are the bytes to write. Index is in dec
         MemoryManager.prototype.write = function (bytes, index) {

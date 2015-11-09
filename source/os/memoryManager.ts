@@ -2,15 +2,29 @@
 
 module TSOS {
   export class MemoryManager {
+    availableParitions: number[];
+
     constructor() {
+      this.availableParitions = [0, 1, 2];
       this.updateDisplay();
     }
 
     public clearMemory() {
+      this.availableParitions = [0, 1, 2];
       _Memory.memory = [];
       for (var i = 0; i < 768; i++) {
         _Memory.memory.push("00");
       }
+    }
+
+    public loadProgram(bytes) {
+      if (this.availableParitions.length < 1) {
+        return -1;
+      }
+      this.write(bytes, this.availableParitions.shift() * 256);
+      console.log(this.availableParitions.length);
+      _PID++;
+      return _PID - 1;
     }
 
     // bytes are the bytes to write. Index is in dec

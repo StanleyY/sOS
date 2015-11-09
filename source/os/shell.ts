@@ -375,10 +375,12 @@ module TSOS {
       var input = _ProgramInput.value;
       input = input.replace(/\n+/g, '');
       if (input.match(regex) && input.replace(/\s+/g, '').length % 2 == 0) {
-        _MMU.write(input.replace(/\s+/g, ''), 0);  // Write to first index.
-        _StdOut.putText("Loaded to PID: " + _PID);
-        _PcbList = [new PCB(_PID)]; // TODO: Turn this into push once I support more than one program.
-        _PID++;
+        var pid = _MMU.loadProgram(input.replace(/\s+/g, ''));
+        if (pid > -1) {
+          _StdOut.putText("Loaded to PID: " + pid);
+        } else {
+          _StdOut.putText("No available memory partition");
+        }
       } else {
         _StdOut.putText("Input is invalid.");
       }
