@@ -17,6 +17,7 @@ module TSOS {
       var pids = this.residentQueue.map(function(pcb){return pcb.pid;});
       if (pids.indexOf(pid) > -1) {
         var pcb = this.residentQueue.splice(pids.indexOf(pid), 1)[0];
+        pcb.setStatus("Waiting");
         this.readyQueue.push(pcb);
         return true;
       } else {
@@ -26,6 +27,7 @@ module TSOS {
 
     public runAll(): void {
       this.readyQueue = this.readyQueue.concat(this.residentQueue);
+      this.readyQueue.forEach(function(pcb){pcb.setStatus("Waiting")});
       this.residentQueue = [];
     }
 
@@ -58,6 +60,7 @@ module TSOS {
           this.currentQuantum = 0;
           // Only bother rotating the queue if there is more than one program
           if (this.readyQueue.length > 1) {
+            this.readyQueue[0].setStatus("Waiting");
             var pcb = this.readyQueue.shift();
             this.readyQueue.push(pcb);
             _CPU.isExecuting = false;
@@ -66,6 +69,7 @@ module TSOS {
         }
         if (!_CPU.isExecuting) {
           Control.hostLog("Loaded PID: " + this.readyQueue[0].pid, "scheduler");
+          this.readyQueue[0].setStatus("Running");
           _CPU.loadPCB(this.readyQueue[0]);
           _CPU.isExecuting = true;
         }
@@ -107,9 +111,12 @@ module TSOS {
       }
       // Ready Queue
       table = <HTMLTableElement> document.getElementById('readyQueueTable');
-      table.innerHTML = "<tr><td>PID</td><td>PC</td><td>ACC</td><td>X</td><td>Y</td><td>Z</td><td>Base</td></tr>";
+      table.innerHTML = "<tr><td class='statusCell'>Status</td><td>PID</td><td>PC</td><td>ACC</td><td>X</td><td>Y</td><td>Z</td><td>Base</td></tr>";
       for (var i = 0; i < this.readyQueue.length; i++) {
         var row = <HTMLTableRowElement> table.insertRow();  // insert a new row at 0
+        var statusCell = row.insertCell();
+        statusCell.innerHTML = this.readyQueue[i].status;
+        statusCell.className = "statusCell";
         row.insertCell().innerHTML = "" + this.readyQueue[i].pid;
         row.insertCell().innerHTML = "" + this.readyQueue[i].PC;
         row.insertCell().innerHTML = "" + this.readyQueue[i].Acc;

@@ -112,9 +112,13 @@ td {
   height: 125px;
   overflow-y: scroll;
 }
-#readyQueueTable td{
+#readyQueueTable td {
   text-align: center;
   width: 40px;
+}
+#readyQueueTable .statusCell {
+  text-align: center;
+  width: 70px;
 }
 
 #taskBar {
