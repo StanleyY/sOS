@@ -81,6 +81,8 @@ var TSOS;
             sc = new TSOS.ShellCommand(this.shellQuantum, "quantum", "sets the quantum for Round Robin scheduling.");
             this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
+            sc = new TSOS.ShellCommand(this.shellPS, "ps", "Displays all active PIDs.");
+            this.commandList[this.commandList.length] = sc;
             // kill <id> - kills the specified process id.
             //
             // Display the initial prompt.
@@ -363,6 +365,14 @@ var TSOS;
             }
             else {
                 _StdOut.putText("quantum <int>");
+            }
+        };
+        Shell.prototype.shellPS = function (args) {
+            if (args.length == 0) {
+                _Scheduler.ps();
+            }
+            else {
+                _StdOut.putText("ps takes no arguments");
             }
         };
         return Shell;

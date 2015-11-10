@@ -96,5 +96,14 @@ module TSOS {
         row.insertCell().innerHTML = "0x" + Utils.intToHex(this.readyQueue[i].baseReg);
       }
     }
+
+    public ps() {
+      var pids = this.residentQueue.concat(this.readyQueue).map(function(pcb){return pcb.pid;});
+      if (pids.length > 0) {
+        _Console.putText("Active PIDs: " + pids.join(","));
+      } else {
+        _Console.putText("No active processes.");
+      }
+    }
   }
 }

@@ -140,7 +140,13 @@ module TSOS {
                             "quantum",
                             "sets the quantum for Round Robin scheduling.");
       this.commandList[this.commandList.length] = sc;
+
       // ps  - list the running processes and their IDs
+      sc = new ShellCommand(this.shellPS,
+                            "ps",
+                            "Displays all active PIDs.");
+      this.commandList[this.commandList.length] = sc;
+
       // kill <id> - kills the specified process id.
 
       //
@@ -434,6 +440,14 @@ module TSOS {
         _Scheduler.quantum = parseInt(args[0]);
       } else {
         _StdOut.putText("quantum <int>");
+      }
+    }
+
+    public shellPS(args) {
+      if (args.length == 0) {
+        _Scheduler.ps();
+      } else {
+        _StdOut.putText("ps takes no arguments");
       }
     }
   }
