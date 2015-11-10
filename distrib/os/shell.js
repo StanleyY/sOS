@@ -77,6 +77,9 @@ var TSOS;
             //runall
             sc = new TSOS.ShellCommand(this.shellRunAll, "runall", "runs all programs in the resident queue.");
             this.commandList[this.commandList.length] = sc;
+            //quantum
+            sc = new TSOS.ShellCommand(this.shellQuantum, "quantum", "sets the quantum for Round Robin scheduling.");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             //
@@ -352,6 +355,14 @@ var TSOS;
             }
             else {
                 _StdOut.putText("runall takes no arguments");
+            }
+        };
+        Shell.prototype.shellQuantum = function (args) {
+            if (args.length == 1 && !isNaN(args[0])) {
+                _Scheduler.quantum = parseInt(args[0]);
+            }
+            else {
+                _StdOut.putText("quantum <int>");
             }
         };
         return Shell;

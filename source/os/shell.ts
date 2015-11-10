@@ -134,6 +134,12 @@ module TSOS {
                             "runall",
                             "runs all programs in the resident queue.");
       this.commandList[this.commandList.length] = sc;
+
+      //quantum
+      sc = new ShellCommand(this.shellQuantum,
+                            "quantum",
+                            "sets the quantum for Round Robin scheduling.");
+      this.commandList[this.commandList.length] = sc;
       // ps  - list the running processes and their IDs
       // kill <id> - kills the specified process id.
 
@@ -420,6 +426,14 @@ module TSOS {
         _Scheduler.runAll();
       } else {
         _StdOut.putText("runall takes no arguments");
+      }
+    }
+
+    public shellQuantum(args) {
+      if (args.length == 1 && !isNaN(args[0])) {
+        _Scheduler.quantum = parseInt(args[0]);
+      } else {
+        _StdOut.putText("quantum <int>");
       }
     }
   }
