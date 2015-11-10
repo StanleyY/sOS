@@ -17,6 +17,15 @@ module TSOS {
       }
     }
 
+    public getMemoryAddress(base, index) {
+      if (index < 256 && index > -1) {
+        return base + index;
+      } else {
+        _CPU.illegalMemAccess();
+        return -1;
+      }
+    }
+
     // Loads the program into memory and creates a pcb.
     // Returns the PCB or null if no partitions available.
     public loadProgram(bytes) {
@@ -24,15 +33,17 @@ module TSOS {
         return null;
       }
       var base = this.availableParitions.shift() * 256;
-      this.write(bytes, base);
+      this.write(bytes, base, 0);
       var pcb = new PCB(_PID, base);
       _PID++;
+      Control.hostLog("Allocated Memory Partition: " + base / 256, "Memory Manager");
       return pcb;
     }
 
-    // bytes are the bytes to write. Index is in dec
-    public write(bytes, index): void {
-      if (index < 768 && index > -1) {
+    // bytes are the bytes to write. Index is in decimal
+    public write(bytes, base, index): void {
+      index = this.getMemoryAddress(base, index);
+      if (index > -1) {
         for(var i = 0; i < bytes.length; i = i + 2) {
           _Memory.memory[index] = bytes.substring(i, i+2);
           index++;
@@ -43,20 +54,22 @@ module TSOS {
       }
     }
 
-    public fetchByHex(hexIndex): number {
-      return this.fetch(parseInt(hexIndex, 16));
+    public fetchByHex(base, hexIndex): number {
+      return this.fetch(base, parseInt(hexIndex, 16));
     }
 
-    public fetch(index): number {
-      if (index < 768 && index > -1) {
+    public fetch(base, index): number {
+      index = this.getMemoryAddress(base, index);
+      if (index > -1) {
         return _Memory.memory[index];
       } else {
         _CPU.illegalMemAccess();
       }
     }
 
-    public increment(index): void {
-      if (index < 768 && index > -1) {
+    public increment(base, index): void {
+      index = this.getMemoryAddress(base, index);
+      if (index > -1) {
         var temp = Utils.intToHex((Utils.parseHex(_Memory.memory[index]) + 1));
         _Memory.memory[index] = temp;
       } else {

@@ -36,6 +36,7 @@ var TSOS;
         }
         Cpu.prototype.init = function () {
             this.PC = 0;
+            this.IR = "00";
             this.Acc = 0;
             this.Xreg = 0;
             this.Yreg = 0;
@@ -84,20 +85,20 @@ var TSOS;
             return TSOS.Utils.parseHex(this.readNextMemValueInHex());
         };
         Cpu.prototype.readNextMemValueInHex = function () {
-            var temp = _MMU.fetch(this.PC);
+            var temp = _MMU.fetch(this.baseReg, this.PC);
             this.PC++;
             return temp;
         };
         Cpu.prototype.readNextTwoMemValues = function () {
-            var temp = _MMU.fetch(this.PC);
+            var temp = _MMU.fetch(this.baseReg, this.PC);
             this.PC++;
-            temp = _MMU.fetch(this.PC) + temp; // Big Endian
+            temp = _MMU.fetch(this.baseReg, this.PC) + temp; // Big Endian
             this.PC++;
             return TSOS.Utils.parseHex(temp);
         };
         // Index is in decimal
         Cpu.prototype.readMemValue = function (index) {
-            return TSOS.Utils.parseHex(_MMU.fetch(index));
+            return TSOS.Utils.parseHex(_MMU.fetch(this.baseReg, index));
         };
         Cpu.prototype.opCodeLookup = function (opCode) {
             this.IR = opCode;
@@ -141,7 +142,6 @@ var TSOS;
             }
             else if (opCode == "00") {
                 this.abort(""); // Break
-                _PcbList = []; // TODO Remove by PID in project 3.
             }
             else {
                 this.abort("Unknown Operation, Aborting.");
@@ -170,7 +170,7 @@ var TSOS;
         };
         Cpu.prototype.storeAcc = function () {
             var memLocation = this.readNextTwoMemValues();
-            _MMU.write(TSOS.Utils.intToHex(this.Acc), memLocation);
+            _MMU.write(TSOS.Utils.intToHex(this.Acc), this.baseReg, memLocation);
         };
         Cpu.prototype.addAcc = function () {
             var memLocation = this.readNextTwoMemValues();
@@ -194,7 +194,7 @@ var TSOS;
         };
         Cpu.prototype.incrementByte = function () {
             var memLocation = this.readNextTwoMemValues();
-            _MMU.increment(memLocation);
+            _MMU.increment(this.baseReg, memLocation);
         };
         Cpu.prototype.sysCall = function () {
             if (this.Xreg == 1) {

@@ -28,7 +28,6 @@ var TSOS;
         //
         Devices.hostClockPulse = function () {
             // Call the kernel clock pulse event handler.
-            _Scheduler.schedule();
             _Kernel.krnOnCPUClockPulse();
             TSOS.Utils.updateTaskbar();
             TSOS.PCB.updatePcbDisplay();

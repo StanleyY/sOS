@@ -96,9 +96,8 @@ module TSOS {
 
     public krnRunClockCycle() {
       _OSclock++;
-      if (_CPU.isExecuting) { // If there are no interrupts then run one CPU cycle if there is anything being processed.
-        _CPU.cycle();
-      } else {            // If there are no interrupts and there is nothing being executed then just be idle.
+      _Scheduler.schedule();
+      if (!_CPU.isExecuting) { // If there are no interrupts then run one CPU cycle if there is anything being processed.
         this.krnTrace("Idle");
       }
     }

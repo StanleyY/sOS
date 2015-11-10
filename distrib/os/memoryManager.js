@@ -13,6 +13,15 @@ var TSOS;
                 _Memory.memory.push("00");
             }
         };
+        MemoryManager.prototype.getMemoryAddress = function (base, index) {
+            if (index < 256 && index > -1) {
+                return base + index;
+            }
+            else {
+                _CPU.illegalMemAccess();
+                return -1;
+            }
+        };
         // Loads the program into memory and creates a pcb.
         // Returns the PCB or null if no partitions available.
         MemoryManager.prototype.loadProgram = function (bytes) {
@@ -20,14 +29,16 @@ var TSOS;
                 return null;
             }
             var base = this.availableParitions.shift() * 256;
-            this.write(bytes, base);
+            this.write(bytes, base, 0);
             var pcb = new TSOS.PCB(_PID, base);
             _PID++;
+            TSOS.Control.hostLog("Allocated Memory Partition: " + base / 256, "Memory Manager");
             return pcb;
         };
-        // bytes are the bytes to write. Index is in dec
-        MemoryManager.prototype.write = function (bytes, index) {
-            if (index < 768 && index > -1) {
+        // bytes are the bytes to write. Index is in decimal
+        MemoryManager.prototype.write = function (bytes, base, index) {
+            index = this.getMemoryAddress(base, index);
+            if (index > -1) {
                 for (var i = 0; i < bytes.length; i = i + 2) {
                     _Memory.memory[index] = bytes.substring(i, i + 2);
                     index++;
@@ -38,19 +49,21 @@ var TSOS;
                 _CPU.illegalMemAccess();
             }
         };
-        MemoryManager.prototype.fetchByHex = function (hexIndex) {
-            return this.fetch(parseInt(hexIndex, 16));
+        MemoryManager.prototype.fetchByHex = function (base, hexIndex) {
+            return this.fetch(base, parseInt(hexIndex, 16));
         };
-        MemoryManager.prototype.fetch = function (index) {
-            if (index < 768 && index > -1) {
+        MemoryManager.prototype.fetch = function (base, index) {
+            index = this.getMemoryAddress(base, index);
+            if (index > -1) {
                 return _Memory.memory[index];
             }
             else {
                 _CPU.illegalMemAccess();
             }
         };
-        MemoryManager.prototype.increment = function (index) {
-            if (index < 768 && index > -1) {
+        MemoryManager.prototype.increment = function (base, index) {
+            index = this.getMemoryAddress(base, index);
+            if (index > -1) {
                 var temp = TSOS.Utils.intToHex((TSOS.Utils.parseHex(_Memory.memory[index]) + 1));
                 _Memory.memory[index] = temp;
             }

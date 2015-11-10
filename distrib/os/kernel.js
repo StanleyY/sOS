@@ -83,10 +83,8 @@ var TSOS;
         };
         Kernel.prototype.krnRunClockCycle = function () {
             _OSclock++;
-            if (_CPU.isExecuting) {
-                _CPU.cycle();
-            }
-            else {
+            _Scheduler.schedule();
+            if (!_CPU.isExecuting) {
                 this.krnTrace("Idle");
             }
         };

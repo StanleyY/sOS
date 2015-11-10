@@ -31,6 +31,7 @@ module TSOS {
 
     public init(): void {
       this.PC = 0;
+      this.IR = "00";
       this.Acc = 0;
       this.Xreg = 0;
       this.Yreg = 0;
@@ -86,22 +87,22 @@ module TSOS {
     }
 
     public readNextMemValueInHex(): number {
-      var temp = _MMU.fetch(this.PC);
+      var temp = _MMU.fetch(this.baseReg, this.PC);
       this.PC++;
       return temp;
     }
 
     public readNextTwoMemValues(): number {
-      var temp = _MMU.fetch(this.PC);
+      var temp = _MMU.fetch(this.baseReg, this.PC);
       this.PC++;
-      temp = _MMU.fetch(this.PC) + temp;  // Big Endian
+      temp = _MMU.fetch(this.baseReg, this.PC) + temp;  // Big Endian
       this.PC++;
       return Utils.parseHex(temp);
     }
 
     // Index is in decimal
     public readMemValue(index): number {
-      return Utils.parseHex(_MMU.fetch(index));
+      return Utils.parseHex(_MMU.fetch(this.baseReg, index));
     }
 
     public opCodeLookup(opCode) {
@@ -134,7 +135,6 @@ module TSOS {
         this.sysCall();
       } else if (opCode == "00") {
         this.abort("");  // Break
-        _PcbList = []; // TODO Remove by PID in project 3.
       } else {
         this.abort("Unknown Operation, Aborting.");
       }
@@ -169,7 +169,7 @@ module TSOS {
 
     public storeAcc() {
       var memLocation = this.readNextTwoMemValues();
-      _MMU.write(Utils.intToHex(this.Acc), memLocation);
+      _MMU.write(Utils.intToHex(this.Acc), this.baseReg, memLocation);
     }
 
     public addAcc() {
@@ -196,7 +196,7 @@ module TSOS {
 
     public incrementByte() {
       var memLocation = this.readNextTwoMemValues();
-      _MMU.increment(memLocation);
+      _MMU.increment(this.baseReg, memLocation);
     }
 
     public sysCall() {

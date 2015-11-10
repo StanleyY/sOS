@@ -1,14 +1,12 @@
 module TSOS {
 
   export class Scheduler {
-    quantum: number;
-    readyQueue: PCB[];
-    residentQueue: PCB[];
+    quantum: number = 6;
+    currentQuantum: number = 1;
+    readyQueue: PCB[] = [];
+    residentQueue: PCB[] = [];
 
     constructor() {
-      this.quantum = 6;
-      this.readyQueue = [];
-      this.residentQueue = [];
     }
 
     public loadJob(pcb): void {
@@ -28,8 +26,20 @@ module TSOS {
 
     public schedule() {
       if (this.readyQueue.length > 0) {
-        //_CPU.isExecuting = true;
-        //console.log("scheduling");
+        if (!_CPU.isExecuting) {
+          console.log("loaded program");
+          _CPU.loadPCB(this.readyQueue[0]);
+          _CPU.isExecuting = true;
+        }
+        _CPU.cycle();
+        if (_CPU.IR == "00") {  // The CPU just finished a process
+          var pcb = this.readyQueue.shift(); // Remove the PCB that was just used.
+          _MMU.availableParitions.push(pcb.baseReg / 256); // Let the MMU know that this partition is now available.
+          Control.hostLog("Freed Memory Partition: " + pcb.baseReg / 256, "scheduler");
+        }
+      } else {
+        // isExecuting should be false already.
+        _CPU.isExecuting = false;
       }
     }
   }
