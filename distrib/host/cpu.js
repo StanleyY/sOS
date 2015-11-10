@@ -31,6 +31,8 @@ var TSOS;
             this.Yreg = Yreg;
             this.Zflag = Zflag;
             this.isExecuting = isExecuting;
+            this.baseReg = 0;
+            this.limitReg = 256;
         }
         Cpu.prototype.init = function () {
             this.PC = 0;
@@ -49,6 +51,15 @@ var TSOS;
                 "Y reg: " + this.Yreg + "\n" +
                 "Z flag: " + this.Zflag;
             _CpuDisplay.value = temp;
+        };
+        Cpu.prototype.loadPCB = function (pcb) {
+            this.PC = pcb.PC;
+            this.Acc = pcb.Acc;
+            this.Xreg = pcb.Xreg;
+            this.Yreg = pcb.Yreg;
+            this.Zflag = pcb.Zflag;
+            this.baseReg = pcb.baseReg;
+            this.limitReg = pcb.limitReg;
         };
         Cpu.prototype.illegalMemAccess = function () {
             this.abort("Out of bound memory access, Aborting.");

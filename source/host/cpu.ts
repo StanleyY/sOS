@@ -18,7 +18,8 @@
 module TSOS {
 
   export class Cpu {
-
+    baseReg: number = 0;
+    limitReg: number = 256;
     constructor(public PC: number = 0,
                 public IR: string = "00",
                 public Acc: number = 0,
@@ -46,6 +47,16 @@ module TSOS {
                  "Y reg: " + this.Yreg + "\n" +
                  "Z flag: " + this.Zflag;
       _CpuDisplay.value = temp;
+    }
+
+    public loadPCB(pcb): void {
+      this.PC = pcb.PC;
+      this.Acc = pcb.Acc;
+      this.Xreg = pcb.Xreg;
+      this.Yreg = pcb.Yreg;
+      this.Zflag = pcb.Zflag;
+      this.baseReg = pcb.baseReg;
+      this.limitReg = pcb.limitReg;
     }
 
     public illegalMemAccess() {

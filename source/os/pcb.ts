@@ -4,14 +4,14 @@ module TSOS {
   export class PCB {
     limitReg: number;
     constructor(public pid: number,
-                public base: number,
+                public baseReg: number,
                 public status: string = "Resident",
                 public PC: number = 0,
                 public Acc: number = 0,
                 public Xreg: number = 0,
                 public Yreg: number = 0,
                 public Zflag: number = 0) {
-      this.limitReg = base + 256;
+      this.limitReg = this.baseReg + 256;
     }
 
     public getPID(): number {

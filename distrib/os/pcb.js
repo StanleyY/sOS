@@ -2,7 +2,7 @@
 var TSOS;
 (function (TSOS) {
     var PCB = (function () {
-        function PCB(pid, base, status, PC, Acc, Xreg, Yreg, Zflag) {
+        function PCB(pid, baseReg, status, PC, Acc, Xreg, Yreg, Zflag) {
             if (status === void 0) { status = "Resident"; }
             if (PC === void 0) { PC = 0; }
             if (Acc === void 0) { Acc = 0; }
@@ -10,14 +10,14 @@ var TSOS;
             if (Yreg === void 0) { Yreg = 0; }
             if (Zflag === void 0) { Zflag = 0; }
             this.pid = pid;
-            this.base = base;
+            this.baseReg = baseReg;
             this.status = status;
             this.PC = PC;
             this.Acc = Acc;
             this.Xreg = Xreg;
             this.Yreg = Yreg;
             this.Zflag = Zflag;
-            this.limitReg = base + 256;
+            this.limitReg = this.baseReg + 256;
         }
         PCB.prototype.getPID = function () {
             return this.pid;

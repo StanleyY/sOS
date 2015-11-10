@@ -32,6 +32,7 @@ module TSOS {
     //
     public static hostClockPulse(): void {
       // Call the kernel clock pulse event handler.
+      _Scheduler.schedule();
       _Kernel.krnOnCPUClockPulse();
       Utils.updateTaskbar();
       PCB.updatePcbDisplay();

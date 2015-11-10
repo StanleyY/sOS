@@ -13,13 +13,17 @@ var TSOS;
                 _Memory.memory.push("00");
             }
         };
+        // Loads the program into memory and creates a pcb.
+        // Returns the PCB or null if no partitions available.
         MemoryManager.prototype.loadProgram = function (bytes) {
             if (this.availableParitions.length < 1) {
-                return -1;
+                return null;
             }
-            this.write(bytes, this.availableParitions.shift() * 256);
+            var base = this.availableParitions.shift() * 256;
+            this.write(bytes, base);
+            var pcb = new TSOS.PCB(_PID, base);
             _PID++;
-            return _PID - 1;
+            return pcb;
         };
         // bytes are the bytes to write. Index is in dec
         MemoryManager.prototype.write = function (bytes, index) {

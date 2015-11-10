@@ -305,9 +305,10 @@ var TSOS;
             var input = _ProgramInput.value;
             input = input.replace(/\n+/g, '');
             if (input.match(regex) && input.replace(/\s+/g, '').length % 2 == 0) {
-                var pid = _MMU.loadProgram(input.replace(/\s+/g, ''));
-                if (pid > -1) {
-                    _StdOut.putText("Loaded to PID: " + pid);
+                var pcb = _MMU.loadProgram(input.replace(/\s+/g, ''));
+                if (pcb) {
+                    _Scheduler.loadJob(pcb);
+                    _StdOut.putText("Loaded to PID: " + pcb.pid);
                 }
                 else {
                     _StdOut.putText("No available memory partition");
@@ -319,12 +320,8 @@ var TSOS;
         };
         Shell.prototype.shellRun = function (args) {
             if (args.length == 1) {
-                if (args[0] == (_PID - 1)) {
-                    _CPU.isExecuting = true;
-                    _PcbList[0].status = "Running"; // TODO: Look up PID and update status elegantly.
-                }
-                else {
-                    _StdOut.putText("Current only supports running the most recent PID which is " + (_PID - 1));
+                if (!_Scheduler.runJob(parseInt(args[0]))) {
+                    _StdOut.putText("PID does not exists.");
                 }
             }
             else {
