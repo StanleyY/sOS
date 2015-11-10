@@ -30,8 +30,8 @@ var TSOS;
             // Call the kernel clock pulse event handler.
             _Kernel.krnOnCPUClockPulse();
             TSOS.Utils.updateTaskbar();
-            TSOS.PCB.updatePcbDisplay();
             _MMU.updateDisplay();
+            _Scheduler.updateDisplay();
         };
         //
         // Keyboard Interrupt, a HARDWARE Interrupt Request. (See pages 560-561 in our text book.)

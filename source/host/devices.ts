@@ -34,8 +34,8 @@ module TSOS {
       // Call the kernel clock pulse event handler.
       _Kernel.krnOnCPUClockPulse();
       Utils.updateTaskbar();
-      PCB.updatePcbDisplay();
       _MMU.updateDisplay();
+      _Scheduler.updateDisplay();
     }
 
     //

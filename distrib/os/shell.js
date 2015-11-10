@@ -306,21 +306,26 @@ var TSOS;
             }
         };
         Shell.prototype.shellLoad = function (args) {
-            var regex = /^[0-9A-F ]+$/g;
-            var input = _ProgramInput.value;
-            input = input.replace(/\n+/g, '');
-            if (input.match(regex) && input.replace(/\s+/g, '').length % 2 == 0) {
-                var pcb = _MMU.loadProgram(input.replace(/\s+/g, ''));
-                if (pcb) {
-                    _Scheduler.loadJob(pcb);
-                    _StdOut.putText("Loaded to PID: " + pcb.pid);
+            if (args.length == 0) {
+                var regex = /^[0-9A-F ]+$/g;
+                var input = _ProgramInput.value;
+                input = input.replace(/\n+/g, '');
+                if (input.match(regex) && input.replace(/\s+/g, '').length % 2 == 0) {
+                    var pcb = _MMU.loadProgram(input.replace(/\s+/g, ''));
+                    if (pcb) {
+                        _Scheduler.loadJob(pcb);
+                        _StdOut.putText("Loaded to PID: " + pcb.pid);
+                    }
+                    else {
+                        _StdOut.putText("No available memory partition");
+                    }
                 }
                 else {
-                    _StdOut.putText("No available memory partition");
+                    _StdOut.putText("Input is invalid.");
                 }
             }
             else {
-                _StdOut.putText("Input is invalid.");
+                _StdOut.putText("load takes no arguments");
             }
         };
         Shell.prototype.shellRun = function (args) {

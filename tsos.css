@@ -67,16 +67,16 @@ h3 {
   height: 125px;
   overflow-y: scroll;
 }
-#memoryTable {
+table {
   border-collapse: collapse;
   background-color: white;
 }
-#memoryTable tr {
+tr {
   background-color: white;
   border: 1px solid black;
   display: block;
 }
-#memoryTable td {
+td {
   border-left: 1px solid black;
   width: 25px;
 }
@@ -97,13 +97,24 @@ h3 {
   resize: none;
 }
 
-#divPcbDisplay {
+#divResidentQueueDisplay {
   display: inline-block;
+  height: 125px;
+  overflow-y: scroll;
+}
+#residentQueueTable td{
+  text-align: center;
+  width: 40px;
 }
 
-#pcbDisplay {
-  resize: none;
+#divReadyQueueDisplay {
+  display: inline-block;
+  height: 125px;
   overflow-y: scroll;
+}
+#readyQueueTable td{
+  text-align: center;
+  width: 40px;
 }
 
 #taskBar {

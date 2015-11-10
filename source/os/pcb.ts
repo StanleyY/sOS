@@ -21,16 +21,5 @@ module TSOS {
     public setStatus(status): void {
       this.status = status;
     }
-
-    public static updatePcbDisplay() {
-      if (_PcbList.length > 0) {
-        _PcbListDisplay.value = "";
-        for (var i = 0; i < _PcbList.length; i++) {
-          _PcbListDisplay.value += "PID: " + _PcbList[i].pid + ", status: " + _PcbList[i].status + "\n";
-        }
-      } else {
-        _PcbListDisplay.value = "No active processes";
-      }
-    }
   }
 }

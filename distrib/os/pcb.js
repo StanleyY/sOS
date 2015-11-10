@@ -25,17 +25,6 @@ var TSOS;
         PCB.prototype.setStatus = function (status) {
             this.status = status;
         };
-        PCB.updatePcbDisplay = function () {
-            if (_PcbList.length > 0) {
-                _PcbListDisplay.value = "";
-                for (var i = 0; i < _PcbList.length; i++) {
-                    _PcbListDisplay.value += "PID: " + _PcbList[i].pid + ", status: " + _PcbList[i].status + "\n";
-                }
-            }
-            else {
-                _PcbListDisplay.value = "No active processes";
-            }
-        };
         return PCB;
     })();
     TSOS.PCB = PCB;

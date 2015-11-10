@@ -44,6 +44,32 @@ var TSOS;
                 _CPU.isExecuting = false;
             }
         };
+        Scheduler.prototype.updateDisplay = function () {
+            // Resident Queue
+            var table = document.getElementById('residentQueueTable');
+            table.innerHTML = "<tr><td>PID</td><td>ACC</td><td>X</td><td>Y</td><td>Z</td><td>Base</td></tr>";
+            for (var i = 0; i < this.residentQueue.length; i++) {
+                var row = table.insertRow(); // insert a new row at 0
+                row.insertCell().innerHTML = "" + this.residentQueue[i].pid;
+                row.insertCell().innerHTML = "" + this.residentQueue[i].Acc;
+                row.insertCell().innerHTML = "" + this.residentQueue[i].Xreg;
+                row.insertCell().innerHTML = "" + this.residentQueue[i].Yreg;
+                row.insertCell().innerHTML = "" + this.residentQueue[i].Zflag;
+                row.insertCell().innerHTML = "0x" + TSOS.Utils.intToHex(this.residentQueue[i].baseReg);
+            }
+            // Ready Queue
+            table = document.getElementById('readyQueueTable');
+            table.innerHTML = "<tr><td>PID</td><td>ACC</td><td>X</td><td>Y</td><td>Z</td><td>Base</td></tr>";
+            for (var i = 0; i < this.readyQueue.length; i++) {
+                var row = table.insertRow(); // insert a new row at 0
+                row.insertCell().innerHTML = "" + this.readyQueue[i].pid;
+                row.insertCell().innerHTML = "" + this.readyQueue[i].Acc;
+                row.insertCell().innerHTML = "" + this.readyQueue[i].Xreg;
+                row.insertCell().innerHTML = "" + this.readyQueue[i].Yreg;
+                row.insertCell().innerHTML = "" + this.readyQueue[i].Zflag;
+                row.insertCell().innerHTML = "0x" + TSOS.Utils.intToHex(this.readyQueue[i].baseReg);
+            }
+        };
         return Scheduler;
     })();
     TSOS.Scheduler = Scheduler;

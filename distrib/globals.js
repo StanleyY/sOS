@@ -50,9 +50,6 @@ var _StepMode = false;
 var _MMU;
 var _MemoryDisplay;
 var _Memory;
-// PCB related
-var _PcbList = [];
-var _PcbListDisplay;
 // Taskbar
 var _TaskBar;
 var _TaskBarStatus = "Started";
