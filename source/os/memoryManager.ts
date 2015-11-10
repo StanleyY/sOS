@@ -48,9 +48,6 @@ module TSOS {
           _Memory.memory[index] = bytes.substring(i, i+2);
           index++;
         }
-        this.updateDisplay();
-      } else {
-        _CPU.illegalMemAccess();
       }
     }
 
@@ -62,8 +59,6 @@ module TSOS {
       index = this.getMemoryAddress(base, index);
       if (index > -1) {
         return _Memory.memory[index];
-      } else {
-        _CPU.illegalMemAccess();
       }
     }
 
@@ -72,10 +67,7 @@ module TSOS {
       if (index > -1) {
         var temp = Utils.intToHex((Utils.parseHex(_Memory.memory[index]) + 1));
         _Memory.memory[index] = temp;
-      } else {
-        _CPU.illegalMemAccess();
       }
-      this.updateDisplay();
     }
 
     public updateDisplay() {
