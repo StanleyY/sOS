@@ -24,6 +24,11 @@ module TSOS {
       }
     }
 
+    public runAll(): void {
+      this.readyQueue = this.readyQueue.concat(this.residentQueue);
+      this.residentQueue = [];
+    }
+
     public schedule() {
       if (this.readyQueue.length > 0) {
         if (!_CPU.isExecuting) {

@@ -68,9 +68,14 @@ var TSOS;
             //load
             sc = new TSOS.ShellCommand(this.shellLoad, "load", "- loads the value in program input into memory.");
             this.commandList[this.commandList.length] = sc;
+            //run
             sc = new TSOS.ShellCommand(this.shellRun, "run", "- runs a given pid.");
             this.commandList[this.commandList.length] = sc;
+            //clearmem
             sc = new TSOS.ShellCommand(this.shellClearMem, "clearmem", "clears the memory.");
+            this.commandList[this.commandList.length] = sc;
+            //runall
+            sc = new TSOS.ShellCommand(this.shellRunAll, "runall", "runs all programs in the resident queue.");
             this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -334,6 +339,14 @@ var TSOS;
             }
             else {
                 _StdOut.putText("clearmem takes no arguments");
+            }
+        };
+        Shell.prototype.shellRunAll = function (args) {
+            if (args.length == 0) {
+                _Scheduler.runAll();
+            }
+            else {
+                _StdOut.putText("runall takes no arguments");
             }
         };
         return Shell;

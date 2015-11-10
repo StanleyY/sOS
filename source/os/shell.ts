@@ -117,14 +117,22 @@ module TSOS {
                             "- loads the value in program input into memory.");
       this.commandList[this.commandList.length] = sc;
 
+      //run
       sc = new ShellCommand(this.shellRun,
                             "run",
                             "- runs a given pid.");
       this.commandList[this.commandList.length] = sc;
 
+      //clearmem
       sc = new ShellCommand(this.shellClearMem,
                             "clearmem",
                             "clears the memory.");
+      this.commandList[this.commandList.length] = sc;
+
+      //runall
+      sc = new ShellCommand(this.shellRunAll,
+                            "runall",
+                            "runs all programs in the resident queue.");
       this.commandList[this.commandList.length] = sc;
       // ps  - list the running processes and their IDs
       // kill <id> - kills the specified process id.
@@ -396,11 +404,19 @@ module TSOS {
     }
 
     public shellClearMem(args) {
-        if (args.length == 0) {
-          _MMU.clearMemory();
-        } else {
-          _StdOut.putText("clearmem takes no arguments");
-        }
+      if (args.length == 0) {
+        _MMU.clearMemory();
+      } else {
+        _StdOut.putText("clearmem takes no arguments");
+      }
+    }
+
+    public shellRunAll(args) {
+      if (args.length == 0) {
+        _Scheduler.runAll();
+      } else {
+        _StdOut.putText("runall takes no arguments");
+      }
     }
   }
 }

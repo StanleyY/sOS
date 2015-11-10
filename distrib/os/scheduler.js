@@ -21,6 +21,10 @@ var TSOS;
                 return false;
             }
         };
+        Scheduler.prototype.runAll = function () {
+            this.readyQueue = this.readyQueue.concat(this.residentQueue);
+            this.residentQueue = [];
+        };
         Scheduler.prototype.schedule = function () {
             if (this.readyQueue.length > 0) {
                 if (!_CPU.isExecuting) {
