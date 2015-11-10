@@ -17,6 +17,8 @@ var TSOS;
             this.Xreg = Xreg;
             this.Yreg = Yreg;
             this.Zflag = Zflag;
+            this.time = 0;
+            this.waitingTime = 0;
             this.limitReg = this.baseReg + 256;
         }
         PCB.prototype.getPID = function () {

@@ -3,6 +3,8 @@
 module TSOS {
   export class PCB {
     limitReg: number;
+    time: number = 0;
+    waitingTime: number = 0;
     constructor(public pid: number,
                 public baseReg: number,
                 public status: string = "Resident",

@@ -71,9 +71,11 @@ var TSOS;
                     _CPU.isExecuting = true;
                 }
                 _CPU.cycle();
+                this.updatePCBTime();
                 if (_CPU.IR == "00") {
                     var pcb = this.readyQueue.shift(); // Remove the PCB that was just used.
                     _MMU.availableParitions.push(pcb.baseReg / 256); // Let the MMU know that this partition is now available.
+                    TSOS.Control.hostLog("PID: " + pcb.pid + " turnaround time: " + pcb.time + ", waiting time: " + pcb.waitingTime, "scheduler");
                     TSOS.Control.hostLog("Freed Memory Partition: " + pcb.baseReg / 256, "scheduler");
                     this.currentQuantum = -1;
                 }
@@ -91,6 +93,13 @@ var TSOS;
                 this.currentQuantum = 0;
                 // isExecuting should be false already.
                 _CPU.isExecuting = false;
+            }
+        };
+        Scheduler.prototype.updatePCBTime = function () {
+            this.readyQueue[0].time++;
+            for (var i = 1; i < this.readyQueue.length; i++) {
+                this.readyQueue[i].time++;
+                this.readyQueue[i].waitingTime++;
             }
         };
         Scheduler.prototype.updateDisplay = function () {
