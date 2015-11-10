@@ -2,15 +2,24 @@
 
 module TSOS {
   export class PCB {
-
-    // TODO project 3, add useful functions.
-    // Turn status into an Enum.
+    limitReg: number;
     constructor(public pid: number,
-                public status: string = "Ready",
+                public base: number,
+                public status: string = "Resident",
                 public PC: number = 0,
+                public Acc: number = 0,
                 public Xreg: number = 0,
                 public Yreg: number = 0,
                 public Zflag: number = 0) {
+      this.limitReg = base + 256;
+    }
+
+    public getPID(): number {
+      return this.pid;
+    }
+
+    public setStatus(status): void {
+      this.status = status;
     }
 
     public static updatePcbDisplay() {
