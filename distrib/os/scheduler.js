@@ -38,6 +38,14 @@ var TSOS;
                     _MMU.availableParitions.push(pcb.baseReg / 256); // Let the MMU know that this partition is now available.
                     TSOS.Control.hostLog("Freed Memory Partition: " + pcb.baseReg / 256, "scheduler");
                 }
+                else {
+                    // Load PCB with the new commands
+                    this.readyQueue[0].PC = _CPU.PC;
+                    this.readyQueue[0].Acc = _CPU.Acc;
+                    this.readyQueue[0].Xreg = _CPU.Xreg;
+                    this.readyQueue[0].Yreg = _CPU.Yreg;
+                    this.readyQueue[0].Zflag = _CPU.Zflag;
+                }
             }
             else {
                 // isExecuting should be false already.
@@ -47,10 +55,11 @@ var TSOS;
         Scheduler.prototype.updateDisplay = function () {
             // Resident Queue
             var table = document.getElementById('residentQueueTable');
-            table.innerHTML = "<tr><td>PID</td><td>ACC</td><td>X</td><td>Y</td><td>Z</td><td>Base</td></tr>";
+            table.innerHTML = "<tr><td>PID</td><td>PC</td><td>ACC</td><td>X</td><td>Y</td><td>Z</td><td>Base</td></tr>";
             for (var i = 0; i < this.residentQueue.length; i++) {
                 var row = table.insertRow(); // insert a new row at 0
                 row.insertCell().innerHTML = "" + this.residentQueue[i].pid;
+                row.insertCell().innerHTML = "" + this.residentQueue[i].PC;
                 row.insertCell().innerHTML = "" + this.residentQueue[i].Acc;
                 row.insertCell().innerHTML = "" + this.residentQueue[i].Xreg;
                 row.insertCell().innerHTML = "" + this.residentQueue[i].Yreg;
@@ -59,10 +68,11 @@ var TSOS;
             }
             // Ready Queue
             table = document.getElementById('readyQueueTable');
-            table.innerHTML = "<tr><td>PID</td><td>ACC</td><td>X</td><td>Y</td><td>Z</td><td>Base</td></tr>";
+            table.innerHTML = "<tr><td>PID</td><td>PC</td><td>ACC</td><td>X</td><td>Y</td><td>Z</td><td>Base</td></tr>";
             for (var i = 0; i < this.readyQueue.length; i++) {
                 var row = table.insertRow(); // insert a new row at 0
                 row.insertCell().innerHTML = "" + this.readyQueue[i].pid;
+                row.insertCell().innerHTML = "" + this.readyQueue[i].PC;
                 row.insertCell().innerHTML = "" + this.readyQueue[i].Acc;
                 row.insertCell().innerHTML = "" + this.readyQueue[i].Xreg;
                 row.insertCell().innerHTML = "" + this.readyQueue[i].Yreg;
