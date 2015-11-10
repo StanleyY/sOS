@@ -72,18 +72,20 @@ var TSOS;
             sc = new TSOS.ShellCommand(this.shellRun, "run", "- runs a given pid.");
             this.commandList[this.commandList.length] = sc;
             //clearmem
-            sc = new TSOS.ShellCommand(this.shellClearMem, "clearmem", "clears the memory.");
+            sc = new TSOS.ShellCommand(this.shellClearMem, "clearmem", "- clears the memory.");
             this.commandList[this.commandList.length] = sc;
             //runall
-            sc = new TSOS.ShellCommand(this.shellRunAll, "runall", "runs all programs in the resident queue.");
+            sc = new TSOS.ShellCommand(this.shellRunAll, "runall", "- runs all programs in the resident queue.");
             this.commandList[this.commandList.length] = sc;
             //quantum
-            sc = new TSOS.ShellCommand(this.shellQuantum, "quantum", "sets the quantum for Round Robin scheduling.");
+            sc = new TSOS.ShellCommand(this.shellQuantum, "quantum", "- sets the quantum for Round Robin scheduling.");
             this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
-            sc = new TSOS.ShellCommand(this.shellPS, "ps", "Displays all active PIDs.");
+            sc = new TSOS.ShellCommand(this.shellPS, "ps", "- displays all active PIDs.");
             this.commandList[this.commandList.length] = sc;
             // kill <id> - kills the specified process id.
+            sc = new TSOS.ShellCommand(this.shellKill, "kill", "- kills a given pid.");
+            this.commandList[this.commandList.length] = sc;
             //
             // Display the initial prompt.
             this.putPrompt();
@@ -373,6 +375,16 @@ var TSOS;
             }
             else {
                 _StdOut.putText("ps takes no arguments");
+            }
+        };
+        Shell.prototype.shellKill = function (args) {
+            if (args.length == 1 && !isNaN(args[0])) {
+                if (_Scheduler.kill(parseInt(args[0])) == -1) {
+                    _StdOut.putText("No such PID.");
+                }
+            }
+            else {
+                _StdOut.putText("kill <pid>");
             }
         };
         return Shell;

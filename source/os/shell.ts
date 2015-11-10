@@ -126,28 +126,32 @@ module TSOS {
       //clearmem
       sc = new ShellCommand(this.shellClearMem,
                             "clearmem",
-                            "clears the memory.");
+                            "- clears the memory.");
       this.commandList[this.commandList.length] = sc;
 
       //runall
       sc = new ShellCommand(this.shellRunAll,
                             "runall",
-                            "runs all programs in the resident queue.");
+                            "- runs all programs in the resident queue.");
       this.commandList[this.commandList.length] = sc;
 
       //quantum
       sc = new ShellCommand(this.shellQuantum,
                             "quantum",
-                            "sets the quantum for Round Robin scheduling.");
+                            "- sets the quantum for Round Robin scheduling.");
       this.commandList[this.commandList.length] = sc;
 
       // ps  - list the running processes and their IDs
       sc = new ShellCommand(this.shellPS,
                             "ps",
-                            "Displays all active PIDs.");
+                            "- displays all active PIDs.");
       this.commandList[this.commandList.length] = sc;
 
       // kill <id> - kills the specified process id.
+      sc = new ShellCommand(this.shellKill,
+                            "kill",
+                            "- kills a given pid.");
+      this.commandList[this.commandList.length] = sc;
 
       //
       // Display the initial prompt.
@@ -448,6 +452,16 @@ module TSOS {
         _Scheduler.ps();
       } else {
         _StdOut.putText("ps takes no arguments");
+      }
+    }
+
+    public shellKill(args) {
+      if (args.length == 1 && !isNaN(args[0])) {
+        if (_Scheduler.kill(parseInt(args[0])) == -1) {
+          _StdOut.putText("No such PID.");
+        }
+      } else {
+        _StdOut.putText("kill <pid>");
       }
     }
   }

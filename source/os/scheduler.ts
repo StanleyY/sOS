@@ -29,7 +29,30 @@ module TSOS {
       this.residentQueue = [];
     }
 
-    public schedule() {
+    public kill(pid): number {
+      var pids = this.residentQueue.map(function(pcb){return pcb.pid;});
+      var pcb = null;
+      if (pids.indexOf(pid) > -1) {
+        pcb = this.residentQueue.splice(pids.indexOf(pid), 1)[0];
+      } else {
+        pids = this.readyQueue.map(function(pcb){return pcb.pid;});
+        if (pids.indexOf(pid) > -1) {
+          if (pids.indexOf(pid) == 0) {
+            _CPU.isExecuting = false;
+          }
+          pcb = this.readyQueue.splice(pids.indexOf(pid), 1)[0];
+        } else {
+          // PID not found.
+          return -1;
+        }
+      }
+      // Let the MMU know that this partition is now available.
+      _MMU.availableParitions.push(pcb.baseReg / 256);
+      Control.hostLog("Freed Memory Partition: " + pcb.baseReg / 256, "scheduler");
+      return pcb.pid;
+    }
+
+    public schedule(): void {
       if (this.readyQueue.length > 0) {
         if (this.currentQuantum >= this.quantum) {
           this.currentQuantum = 0;
