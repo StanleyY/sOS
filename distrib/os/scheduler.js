@@ -69,14 +69,7 @@ var TSOS;
                         TSOS.Control.hostLog("Quantum Exceeded, rotated programs", "scheduler");
                     }
                 }
-                if (!_CPU.isExecuting) {
-                    TSOS.Control.hostLog("Loaded PID: " + this.readyQueue[0].pid, "scheduler");
-                    this.readyQueue[0].setStatus("Running");
-                    _CPU.loadPCB(this.readyQueue[0]);
-                    _CPU.isExecuting = true;
-                }
-                _CPU.cycle();
-                this.updatePCBTime();
+                this.runCPU();
                 if (_CPU.IR == "00") {
                     var pcb = this.readyQueue.shift(); // Remove the PCB that was just used.
                     _MMU.availableParitions.push(pcb.baseReg / 256); // Let the MMU know that this partition is now available.
@@ -99,6 +92,16 @@ var TSOS;
                 // isExecuting should be false already.
                 _CPU.isExecuting = false;
             }
+        };
+        Scheduler.prototype.runCPU = function () {
+            if (!_CPU.isExecuting) {
+                TSOS.Control.hostLog("Loaded PID: " + this.readyQueue[0].pid, "scheduler");
+                this.readyQueue[0].setStatus("Running");
+                _CPU.loadPCB(this.readyQueue[0]);
+                _CPU.isExecuting = true;
+            }
+            _CPU.cycle();
+            this.updatePCBTime();
         };
         Scheduler.prototype.updatePCBTime = function () {
             this.readyQueue[0].time++;
