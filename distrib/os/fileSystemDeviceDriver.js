@@ -78,18 +78,24 @@ var TSOS;
             return true;
         };
         FileSystemDeviceDriver.prototype.readFile = function (name) {
+            var data = this.readFileData(name);
+            if (data) {
+                return this.convertASCIItoStr(data);
+            }
+            return "";
+        };
+        FileSystemDeviceDriver.prototype.readFileData = function (name) {
             name = this.convertStrToASCII(name);
             if (!this.generalFilenameChecks(name)) {
-                return false;
+                return null;
             }
             var current_id = this.filenameLookup(name);
             if (current_id == "000") {
                 _StdOut.putText("Filename does not exists.");
-                return false;
+                return null;
             }
             current_id = sessionStorage.getItem(current_id).substring(1, 4);
-            _StdOut.putText(this.convertASCIItoStr(this.readBlockChain(current_id)));
-            return true;
+            return this.readBlockChain(current_id);
         };
         FileSystemDeviceDriver.prototype.writeFile = function (name, data) {
             name = this.convertStrToASCII(name);
@@ -237,7 +243,7 @@ var TSOS;
             }).join('');
         };
         FileSystemDeviceDriver.prototype.convertASCIItoStr = function (value) {
-            if (value.length < 1)
+            if (!value || value.length < 1)
                 return "";
             return value.match(/.{1,2}/g).map(function (char) {
                 return String.fromCharCode(TSOS.Utils.parseHex(char));

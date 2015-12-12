@@ -431,7 +431,10 @@ var TSOS;
         };
         Shell.prototype.shellRead = function (args) {
             if (args.length == 1) {
-                _krnFileSystemDriver.readFile(args[0]);
+                var output = _krnFileSystemDriver.readFile(args[0]);
+                if (output) {
+                    _StdOut.putText(output);
+                }
             }
             else {
                 _StdOut.putText("read <filename>");

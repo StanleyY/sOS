@@ -80,19 +80,26 @@ module TSOS {
     }
 
     public readFile(name) {
+      var data = this.readFileData(name);
+      if (data) {
+        return this.convertASCIItoStr(data);
+      }
+      return "";
+    }
+
+    public readFileData(name) {
       name = this.convertStrToASCII(name);
       if (!this.generalFilenameChecks(name)) {
-        return false;
+        return null;
       }
       var current_id = this.filenameLookup(name);
       if (current_id == "000") {
         _StdOut.putText("Filename does not exists.");
-        return false;
+        return null;
       }
       current_id = sessionStorage.getItem(current_id).substring(1, 4);
 
-      _StdOut.putText(this.convertASCIItoStr(this.readBlockChain(current_id)));
-      return true;
+      return this.readBlockChain(current_id);
     }
 
     public writeFile(name, data) {
@@ -252,7 +259,7 @@ module TSOS {
     }
 
     public convertASCIItoStr(value) {
-      if (value.length < 1) return "";
+      if (!value || value.length < 1) return "";
       return value.match(/.{1,2}/g).map(function(char){
         return String.fromCharCode(Utils.parseHex(char));
       }).join('');
