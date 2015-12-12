@@ -164,6 +164,16 @@ module TSOS {
     // - WriteFile
     // - CloseFile
 
+    public createProcess(bytes) {
+      var base = _MMU.loadProgram(bytes);
+      if (base != null) {
+        var pcb = new PCB(_PID, base);
+        _PID++;
+        return pcb;
+      }
+      return null;
+    }
+
     //
     // OS Utility Routines
     //

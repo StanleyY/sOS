@@ -34,10 +34,8 @@ module TSOS {
       }
       var base = this.availableParitions.shift() * 256;
       this.write(bytes, base, 0);
-      var pcb = new PCB(_PID, base);
-      _PID++;
       Control.hostLog("Allocated Memory Partition: " + base / 256, "Memory Manager");
-      return pcb;
+      return base;
     }
 
     // bytes are the bytes to write. Index is in decimal

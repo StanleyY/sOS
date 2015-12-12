@@ -143,6 +143,15 @@ var TSOS;
         // - ReadFile
         // - WriteFile
         // - CloseFile
+        Kernel.prototype.createProcess = function (bytes) {
+            var base = _MMU.loadProgram(bytes);
+            if (base != null) {
+                var pcb = new TSOS.PCB(_PID, base);
+                _PID++;
+                return pcb;
+            }
+            return null;
+        };
         //
         // OS Utility Routines
         //
