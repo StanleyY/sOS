@@ -31,6 +31,21 @@ module TSOS {
       return true;
     }
 
+    public listFiles() {
+      var filenames = [];
+      var track = 0;
+      for (var sector = 0; sector < 8; sector++) {
+        for (var block = 0; block < 8; block++) {
+          if (track == 0 && block == 0 && block == 0) block++; // Skip MBR
+          var data = sessionStorage.getItem("" + track + sector + block);
+          if (data[0] == '1') {
+            filenames.push(this.convertASCIItoStr(data.substring(4)));
+          }
+        }
+      }
+      _StdOut.putText(filenames.join(" "));
+    }
+
     private generalFilenameChecks(name) {
       if (!this.isFormatted) {
         _StdOut.putText("Disk is not formatted. ");

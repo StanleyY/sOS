@@ -101,6 +101,9 @@ var TSOS;
             // delete - delete a given filename.
             sc = new TSOS.ShellCommand(this.shellDelete, "delete", "- delete a given filename.");
             this.commandList[this.commandList.length] = sc;
+            // ls - displays available files.
+            sc = new TSOS.ShellCommand(this.shellListFiles, "ls", "- displays available files.");
+            this.commandList[this.commandList.length] = sc;
             //
             // Display the initial prompt.
             this.putPrompt();
@@ -460,6 +463,14 @@ var TSOS;
             }
             else {
                 _StdOut.putText("delete <filename>");
+            }
+        };
+        Shell.prototype.shellListFiles = function (args) {
+            if (args.length == 0) {
+                _krnFileSystemDriver.listFiles();
+            }
+            else {
+                _StdOut.putText("ls takes no arguments");
             }
         };
         return Shell;

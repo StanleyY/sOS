@@ -183,6 +183,12 @@ module TSOS {
                             "- delete a given filename.");
       this.commandList[this.commandList.length] = sc;
 
+      // ls - displays available files.
+      sc = new ShellCommand(this.shellListFiles,
+                            "ls",
+                            "- displays available files.");
+      this.commandList[this.commandList.length] = sc;
+
       //
       // Display the initial prompt.
       this.putPrompt();
@@ -547,6 +553,14 @@ module TSOS {
         }
       } else {
         _StdOut.putText("delete <filename>");
+      }
+    }
+
+    public shellListFiles(args) {
+      if (args.length == 0) {
+        _krnFileSystemDriver.listFiles();
+      } else {
+        _StdOut.putText("ls takes no arguments");
       }
     }
   }
