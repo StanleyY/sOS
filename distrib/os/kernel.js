@@ -146,11 +146,20 @@ var TSOS;
         Kernel.prototype.createProcess = function (bytes) {
             var base = _MMU.loadProgram(bytes);
             if (base != null) {
-                var pcb = new TSOS.PCB(_PID, base);
+                var pcb = new TSOS.PCB(_PID, base, 'Memory');
                 _PID++;
                 return pcb;
             }
-            return null;
+            else {
+                var pcb = new TSOS.PCB(_PID, 0, 'Hard Drive');
+                var filename = _PID + '@sys';
+                if (_krnFileSystemDriver.createFile(filename) && _krnFileSystemDriver.writeFile(filename, bytes)) {
+                    _PID++;
+                    pcb.setFilename(filename);
+                    return pcb;
+                }
+                return null;
+            }
         };
         //
         // OS Utility Routines

@@ -340,7 +340,7 @@ var TSOS;
                         _StdOut.putText("Loaded to PID: " + pcb.pid);
                     }
                     else {
-                        _StdOut.putText("No available memory partition");
+                        _StdOut.putText("No available memory partition or hard drive space.");
                     }
                 }
                 else {

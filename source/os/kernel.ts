@@ -167,11 +167,19 @@ module TSOS {
     public createProcess(bytes) {
       var base = _MMU.loadProgram(bytes);
       if (base != null) {
-        var pcb = new PCB(_PID, base);
+        var pcb = new PCB(_PID, base, 'Memory');
         _PID++;
         return pcb;
+      } else {
+        var pcb = new PCB(_PID, 0, 'Hard Drive');
+        var filename = _PID + '@sys';
+        if(_krnFileSystemDriver.createFile(filename) && _krnFileSystemDriver.writeFile(filename, bytes)) {
+          _PID++;
+          pcb.setFilename(filename);
+          return pcb;
+        }
+        return null;
       }
-      return null;
     }
 
     //

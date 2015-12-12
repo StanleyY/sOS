@@ -108,16 +108,16 @@ module TSOS {
     public updateDisplay() {
       // Resident Queue
       var table = <HTMLTableElement> document.getElementById('residentQueueTable');
-      table.innerHTML = "<tr><td>PID</td><td>PC</td><td>ACC</td><td>X</td><td>Y</td><td>Z</td><td>Base</td></tr>";
+      table.innerHTML = "<tr><td>PID</td><td>ACC</td><td>X</td><td>Y</td><td>Z</td><td>Base</td><td>Location</td></tr>";
       for (var i = 0; i < this.residentQueue.length; i++) {
         var row = <HTMLTableRowElement> table.insertRow();  // insert a new row at 0
         row.insertCell().innerHTML = "" + this.residentQueue[i].pid;
-        row.insertCell().innerHTML = "" + this.residentQueue[i].PC;
         row.insertCell().innerHTML = "" + this.residentQueue[i].Acc;
         row.insertCell().innerHTML = "" + this.residentQueue[i].Xreg;
         row.insertCell().innerHTML = "" + this.residentQueue[i].Yreg;
         row.insertCell().innerHTML = "" + this.residentQueue[i].Zflag;
         row.insertCell().innerHTML = "0x" + Utils.intToHex(this.residentQueue[i].baseReg);
+        row.insertCell().innerHTML = this.residentQueue[i].location;
       }
       // Ready Queue
       table = <HTMLTableElement> document.getElementById('readyQueueTable');

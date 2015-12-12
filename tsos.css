@@ -104,7 +104,8 @@ td {
 }
 #residentQueueTable td{
   text-align: center;
-  width: 40px;
+  white-space: nowrap;
+  width: 50px;
 }
 
 #divReadyQueueDisplay {
@@ -114,7 +115,7 @@ td {
 }
 #readyQueueTable td {
   text-align: center;
-  width: 40px;
+  width: 50px;
 }
 #readyQueueTable .statusCell {
   text-align: center;

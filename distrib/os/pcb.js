@@ -2,7 +2,7 @@
 var TSOS;
 (function (TSOS) {
     var PCB = (function () {
-        function PCB(pid, baseReg, status, PC, Acc, Xreg, Yreg, Zflag) {
+        function PCB(pid, baseReg, location, status, PC, Acc, Xreg, Yreg, Zflag) {
             if (status === void 0) { status = "Resident"; }
             if (PC === void 0) { PC = 0; }
             if (Acc === void 0) { Acc = 0; }
@@ -11,6 +11,7 @@ var TSOS;
             if (Zflag === void 0) { Zflag = 0; }
             this.pid = pid;
             this.baseReg = baseReg;
+            this.location = location;
             this.status = status;
             this.PC = PC;
             this.Acc = Acc;
@@ -26,6 +27,9 @@ var TSOS;
         };
         PCB.prototype.setStatus = function (status) {
             this.status = status;
+        };
+        PCB.prototype.setFilename = function (name) {
+            this.filename = name;
         };
         return PCB;
     })();

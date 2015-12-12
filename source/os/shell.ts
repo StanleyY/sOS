@@ -436,7 +436,7 @@ module TSOS {
             _Scheduler.loadJob(pcb);
             _StdOut.putText("Loaded to PID: " + pcb.pid);
           } else {
-            _StdOut.putText("No available memory partition");
+            _StdOut.putText("No available memory partition or hard drive space.");
           }
         } else {
           _StdOut.putText("Input is invalid.");

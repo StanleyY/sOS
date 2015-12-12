@@ -121,6 +121,7 @@ var TSOS;
                 this.changeNextBlock(current_id, next_id);
                 current_id = next_id;
             }
+            this.updateDisplay();
             return true;
         };
         FileSystemDeviceDriver.prototype.deleteFile = function (name) {

@@ -3,10 +3,12 @@
 module TSOS {
   export class PCB {
     limitReg: number;
+    filename: string;
     time: number = 0;
     waitingTime: number = 0;
     constructor(public pid: number,
                 public baseReg: number,
+                public location: string,
                 public status: string = "Resident",
                 public PC: number = 0,
                 public Acc: number = 0,
@@ -22,6 +24,10 @@ module TSOS {
 
     public setStatus(status): void {
       this.status = status;
+    }
+
+    public setFilename(name): void {
+      this.filename = name;
     }
   }
 }
