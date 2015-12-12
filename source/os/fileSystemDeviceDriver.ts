@@ -25,22 +25,27 @@ module TSOS {
           }
         }
       }
-      sessionStorage.setItem("000", this.getPaddedStr("1000" + this.convertStrToASCII("MBR")));
+      sessionStorage.setItem("000", "1000" + this.getPaddedStr(this.convertStrToASCII("MBR")));
       this.isFormatted = true;
       this.updateDisplay();
       return true;
     }
 
-    public createFile(name) {
-      console.log(name);
+    private generalFilenameChecks(name) {
       if (!this.isFormatted) {
         _StdOut.putText("Disk is not formatted. ");
         return false;
       }
-
-      name = this.convertStrToASCII(name);
       if (name.length > 120) {
         _StdOut.putText("Filename too long, filenames may only be 62 characters long. ");
+        return false;
+      }
+      return true;
+    }
+
+    public createFile(name) {
+      name = this.convertStrToASCII(name);
+      if (!this.generalFilenameChecks(name)) {
         return false;
       }
       if (this.filenameLookup(name) != "000") {
@@ -63,10 +68,18 @@ module TSOS {
       var track = 0;
       for (var sector = 0; sector < 8; sector++) {
         for (var block = 0; block < 8; block++) {
+          if (track == 0 && block == 0 && block == 0) block++; // Skip MBR
           var id = "" + track + sector + block;
           var data = sessionStorage.getItem(id);
-          if (data[0] == '1' && data.substring(4).indexOf(name) == 0) {
-            return id;
+          if (data[0] == '1') {
+            data = data.substring(4);
+            if (data.indexOf('00') == -1) {
+              var data_name = data;
+            } else {
+              var data_name = data.substring(0, data.indexOf('00'));
+            }
+            if (data_name == name)
+              return id;
           }
         }
       }
@@ -77,6 +90,7 @@ module TSOS {
       var track = 0;
       for (var sector = 0; sector < 8; sector++) {
         for (var block = 0; block < 8; block++) {
+          if (track == 0 && block == 0 && block == 0) block++; // Skip MBR
           var id = "" + track + sector + block;
           if(sessionStorage.getItem(id)[0] == "0"){
             return id;
@@ -118,7 +132,7 @@ module TSOS {
     }
 
     public getPaddedStr(str) {
-      return str + Array(124 - str.length).join("0");
+      return str + Array(125 - str.length).join("0");
     }
   }
 }
