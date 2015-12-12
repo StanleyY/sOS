@@ -159,6 +159,12 @@ module TSOS {
                             "- formats the hard disk.");
       this.commandList[this.commandList.length] = sc;
 
+      // create - creates a file
+      sc = new ShellCommand(this.shellCreate,
+                            "create",
+                            "- formats the hard disk.");
+      this.commandList[this.commandList.length] = sc;
+
       //
       // Display the initial prompt.
       this.putPrompt();
@@ -480,6 +486,18 @@ module TSOS {
         }
       } else {
         _StdOut.putText("ps takes no arguments");
+      }
+    }
+
+    public shellCreate(args) {
+      if (args.length == 1) {
+        if(_krnFileSystemDriver.createFile(args[0])) {
+          _StdOut.putText("File created.");
+        } else {
+          _StdOut.putText("Failed to create file.");
+        }
+      } else {
+        _StdOut.putText("create <filename>");
       }
     }
   }

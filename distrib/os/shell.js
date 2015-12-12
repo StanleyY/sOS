@@ -89,6 +89,9 @@ var TSOS;
             // format - formats the hard disk
             sc = new TSOS.ShellCommand(this.shellFormat, "format", "- formats the hard disk.");
             this.commandList[this.commandList.length] = sc;
+            // create - creates a file
+            sc = new TSOS.ShellCommand(this.shellCreate, "create", "- formats the hard disk.");
+            this.commandList[this.commandList.length] = sc;
             //
             // Display the initial prompt.
             this.putPrompt();
@@ -401,6 +404,19 @@ var TSOS;
             }
             else {
                 _StdOut.putText("ps takes no arguments");
+            }
+        };
+        Shell.prototype.shellCreate = function (args) {
+            if (args.length == 1) {
+                if (_krnFileSystemDriver.createFile(args[0])) {
+                    _StdOut.putText("File created.");
+                }
+                else {
+                    _StdOut.putText("Failed to create file.");
+                }
+            }
+            else {
+                _StdOut.putText("create <filename>");
             }
         };
         return Shell;

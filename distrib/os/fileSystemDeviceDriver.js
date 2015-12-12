@@ -28,10 +28,63 @@ var TSOS;
                     }
                 }
             }
-            sessionStorage.setItem("000", "1000" + this.convertStrToASCII("MBR") + Array(119).join("0"));
+            sessionStorage.setItem("000", this.getPaddedStr("1000" + this.convertStrToASCII("MBR")));
             this.isFormatted = true;
             this.updateDisplay();
             return true;
+        };
+        FileSystemDeviceDriver.prototype.createFile = function (name) {
+            console.log(name);
+            if (!this.isFormatted) {
+                _StdOut.putText("Disk is not formatted. ");
+                return false;
+            }
+            name = this.convertStrToASCII(name);
+            if (name.length > 120) {
+                _StdOut.putText("Filename too long, filenames may only be 62 characters long. ");
+                return false;
+            }
+            if (this.filenameLookup(name) != "000") {
+                _StdOut.putText("Filename already exists. ");
+                return false;
+            }
+            var id = this.findDirBlock();
+            if (id == "000") {
+                _StdOut.putText("No Available Directory Space. ");
+                return false;
+            }
+            name = this.getPaddedStr(name);
+            this.writeBlock(id, '000', name);
+            return true;
+        };
+        FileSystemDeviceDriver.prototype.filenameLookup = function (name) {
+            var track = 0;
+            for (var sector = 0; sector < 8; sector++) {
+                for (var block = 0; block < 8; block++) {
+                    var id = "" + track + sector + block;
+                    var data = sessionStorage.getItem(id);
+                    if (data[0] == '1' && data.substring(4).indexOf(name) == 0) {
+                        return id;
+                    }
+                }
+            }
+            return "000";
+        };
+        FileSystemDeviceDriver.prototype.findDirBlock = function () {
+            var track = 0;
+            for (var sector = 0; sector < 8; sector++) {
+                for (var block = 0; block < 8; block++) {
+                    var id = "" + track + sector + block;
+                    if (sessionStorage.getItem(id)[0] == "0") {
+                        return id;
+                    }
+                }
+            }
+            return "000";
+        };
+        FileSystemDeviceDriver.prototype.writeBlock = function (id, next, data) {
+            sessionStorage.setItem(id, '1' + next + data);
+            this.updateDisplay();
         };
         FileSystemDeviceDriver.prototype.updateDisplay = function () {
             _HardDriveDisplay.innerHTML = "<tr><td>T:S:B</td><td>Active</td><td>Next Block</td><td>Data</td></tr>"; // Clear the table
@@ -48,15 +101,18 @@ var TSOS;
                         cell = row.insertCell();
                         cell.innerHTML = data[0];
                         cell = row.insertCell();
-                        cell.innerHTML = data.slice(1, 4);
+                        cell.innerHTML = data.substring(1, 4);
                         cell = row.insertCell();
-                        cell.innerHTML = data.slice(4);
+                        cell.innerHTML = data.substring(4);
                     }
                 }
             }
         };
         FileSystemDeviceDriver.prototype.convertStrToASCII = function (value) {
             return value.split('').map(function (c) { return c.charCodeAt(0); }).join('');
+        };
+        FileSystemDeviceDriver.prototype.getPaddedStr = function (str) {
+            return str + Array(124 - str.length).join("0");
         };
         return FileSystemDeviceDriver;
     })(TSOS.DeviceDriver);
