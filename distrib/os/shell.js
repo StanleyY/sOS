@@ -443,7 +443,7 @@ var TSOS;
         Shell.prototype.shellWrite = function (args) {
             if (args.length == 2) {
                 if (args[1].match(/\".*\"/g)) {
-                    if (_krnFileSystemDriver.writeFile(args[0], args[1].substring(1, args[1].length - 1))) {
+                    if (_krnFileSystemDriver.writeFileASCII(args[0], args[1].substring(1, args[1].length - 1))) {
                         _StdOut.putText("Successfully Written.");
                     }
                 }

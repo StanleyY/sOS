@@ -102,6 +102,10 @@ module TSOS {
       return this.readBlockChain(current_id);
     }
 
+    public writeFileASCII(name, data) {
+      return this.writeFile(name, this.convertStrToASCII(data));
+    }
+
     public writeFile(name, data) {
       name = this.convertStrToASCII(name);
       if (!this.generalFilenameChecks(name)) {
@@ -116,7 +120,6 @@ module TSOS {
       // Delete the old file.
       this.deleteBlockChain(sessionStorage.getItem(current_id).substring(1, 4));
 
-      data = this.convertStrToASCII(data);
       while(data.length > 0) {
         var next_id = this.findEmptyDataBlock();
         if (next_id == "000") {
