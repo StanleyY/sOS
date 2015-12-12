@@ -46,9 +46,14 @@ var TSOS;
                     return -1;
                 }
             }
-            // Let the MMU know that this partition is now available.
-            _MMU.availableParitions.push(pcb.baseReg / 256);
-            TSOS.Control.hostLog("Freed Memory Partition: " + pcb.baseReg / 256, "scheduler");
+            if (pcb.location == "Memory") {
+                // Let the MMU know that this partition is now available.
+                _MMU.availableParitions.push(pcb.baseReg / 256);
+                TSOS.Control.hostLog("Freed Memory Partition: " + pcb.baseReg / 256, "scheduler");
+            }
+            else {
+                _krnFileSystemDriver.deleteFile(pcb.filename);
+            }
             return pcb.pid;
         };
         Scheduler.prototype.schedule = function () {
