@@ -171,6 +171,12 @@ module TSOS {
                             "- writes the data enclosed in quotes to a given filename.");
       this.commandList[this.commandList.length] = sc;
 
+      // delete - delete a given filename.
+      sc = new ShellCommand(this.shellDelete,
+                            "delete",
+                            "- delete a given filename.");
+      this.commandList[this.commandList.length] = sc;
+
       //
       // Display the initial prompt.
       this.putPrompt();
@@ -507,7 +513,7 @@ module TSOS {
     public shellWrite(args) {
       if (args.length == 2) {
         if (args[1].match(/\".*\"/g)) {
-          if (_krnFileSystemDriver.writeFile(args[0], args[1].substring(1, args[1] - 1))) {
+          if (_krnFileSystemDriver.writeFile(args[0], args[1].substring(1, args[1].length - 1))) {
             _StdOut.putText("Successfully Written.");
           }
         } else {
@@ -515,6 +521,18 @@ module TSOS {
         }
       } else {
         _StdOut.putText('write <filename> "data"');
+      }
+    }
+
+    public shellDelete(args) {
+      if (args.length == 1) {
+        if(_krnFileSystemDriver.deleteFile(args[0])) {
+          _StdOut.putText("File deleted.");
+        } else {
+          _StdOut.putText("Failed to delete file.");
+        }
+      } else {
+        _StdOut.putText("delete <filename>");
       }
     }
   }

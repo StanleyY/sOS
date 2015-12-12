@@ -74,8 +74,11 @@ module TSOS {
         _StdOut.putText("Filename does not exists.");
         return false;
       }
-      data = this.convertStrToASCII(data);
 
+      // Delete the old file.
+      this.deleteBlockChain(sessionStorage.getItem(current_id).substring(1, 4));
+
+      data = this.convertStrToASCII(data);
       while(data.length > 0) {
         var next_id = this.findEmptyDataBlock();
         if (next_id == "000") {
@@ -89,6 +92,29 @@ module TSOS {
       }
 
       return true;
+    }
+
+    public deleteFile(name) {
+      name = this.convertStrToASCII(name);
+      if (!this.generalFilenameChecks(name)) {
+        return false;
+      }
+      var current_id = this.filenameLookup(name);
+      if (current_id == "000") {
+        _StdOut.putText("Filename does not exists.");
+        return false;
+      }
+      this.deleteBlockChain(current_id);
+      this.updateDisplay();
+      return true;
+    }
+
+    public deleteBlockChain(id) {
+      while(id != "000") {
+        var next_id = sessionStorage.getItem(id).substring(1, 4);
+        this.setBlockAvailable(id);
+        id = next_id;
+      }
     }
 
     private filenameLookup(name) {
@@ -151,6 +177,10 @@ module TSOS {
       sessionStorage.setItem(old_id, "1" + next_id + sessionStorage.getItem(old_id).substring(4));
     }
 
+    private setBlockAvailable(id) {
+      sessionStorage.setItem(id, "0" + sessionStorage.getItem(id).substring(1));
+    }
+
     public updateDisplay() {
       _HardDriveDisplay.innerHTML = "<tr><td>T:S:B</td><td>Active</td><td>Next Block</td><td>Data</td></tr>"; // Clear the table
       for (var track = 0; track < 4; track++) {
@@ -174,7 +204,7 @@ module TSOS {
     }
 
     public convertStrToASCII(value) {
-      return value.split('').map(function(c){return c.charCodeAt(0);}).join('');
+      return value.split('').map(function(c){return Utils.intToHex(c.charCodeAt(0));}).join('');
     }
 
     public getPaddedStr(str) {
