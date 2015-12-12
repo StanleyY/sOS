@@ -53,13 +53,37 @@ var TSOS;
                 _StdOut.putText("Filename already exists. ");
                 return false;
             }
-            var id = this.findDirBlock();
+            var id = this.findEmptyDirBlock();
             if (id == "000") {
                 _StdOut.putText("No Available Directory Space. ");
                 return false;
             }
             name = this.getPaddedStr(name);
             this.writeBlock(id, '000', name);
+            return true;
+        };
+        FileSystemDeviceDriver.prototype.writeFile = function (name, data) {
+            name = this.convertStrToASCII(name);
+            if (!this.generalFilenameChecks(name)) {
+                return false;
+            }
+            var current_id = this.filenameLookup(name);
+            if (current_id == "000") {
+                _StdOut.putText("Filename does not exists.");
+                return false;
+            }
+            data = this.convertStrToASCII(data);
+            while (data.length > 0) {
+                var next_id = this.findEmptyDataBlock();
+                if (next_id == "000") {
+                    _StdOut.putText("Not enough disk space for this file.");
+                    return false;
+                }
+                this.writeBlock(next_id, "000", this.getPaddedStr(data.substring(0, 124)));
+                data = data.substring(124);
+                this.changeNextBlock(current_id, next_id);
+                current_id = next_id;
+            }
             return true;
         };
         FileSystemDeviceDriver.prototype.filenameLookup = function (name) {
@@ -78,14 +102,15 @@ var TSOS;
                         else {
                             var data_name = data.substring(0, data.indexOf('00'));
                         }
-                        if (data_name == name)
+                        if (data_name == name) {
                             return id;
+                        }
                     }
                 }
             }
             return "000";
         };
-        FileSystemDeviceDriver.prototype.findDirBlock = function () {
+        FileSystemDeviceDriver.prototype.findEmptyDirBlock = function () {
             var track = 0;
             for (var sector = 0; sector < 8; sector++) {
                 for (var block = 0; block < 8; block++) {
@@ -99,9 +124,25 @@ var TSOS;
             }
             return "000";
         };
+        FileSystemDeviceDriver.prototype.findEmptyDataBlock = function () {
+            for (var track = 1; track < 4; track++) {
+                for (var sector = 0; sector < 8; sector++) {
+                    for (var block = 0; block < 8; block++) {
+                        var id = "" + track + sector + block;
+                        if (sessionStorage.getItem(id)[0] == "0") {
+                            return id;
+                        }
+                    }
+                }
+            }
+            return "000";
+        };
         FileSystemDeviceDriver.prototype.writeBlock = function (id, next, data) {
             sessionStorage.setItem(id, '1' + next + data);
             this.updateDisplay();
+        };
+        FileSystemDeviceDriver.prototype.changeNextBlock = function (old_id, next_id) {
+            sessionStorage.setItem(old_id, "1" + next_id + sessionStorage.getItem(old_id).substring(4));
         };
         FileSystemDeviceDriver.prototype.updateDisplay = function () {
             _HardDriveDisplay.innerHTML = "<tr><td>T:S:B</td><td>Active</td><td>Next Block</td><td>Data</td></tr>"; // Clear the table

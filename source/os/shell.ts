@@ -165,6 +165,12 @@ module TSOS {
                             "- formats the hard disk.");
       this.commandList[this.commandList.length] = sc;
 
+      // write - write to a file
+      sc = new ShellCommand(this.shellWrite,
+                            "write",
+                            "- writes the data enclosed in quotes to a given filename.");
+      this.commandList[this.commandList.length] = sc;
+
       //
       // Display the initial prompt.
       this.putPrompt();
@@ -495,6 +501,20 @@ module TSOS {
         }
       } else {
         _StdOut.putText("create <filename>");
+      }
+    }
+
+    public shellWrite(args) {
+      if (args.length == 2) {
+        if (args[1].match(/\".*\"/g)) {
+          if (_krnFileSystemDriver.writeFile(args[0], args[1].substring(1, args[1] - 1))) {
+            _StdOut.putText("Successfully Written.");
+          }
+        } else {
+          _StdOut.putText("Data must be enclosed in quotes.");
+        }
+      } else {
+        _StdOut.putText('write <filename> "data"');
       }
     }
   }
