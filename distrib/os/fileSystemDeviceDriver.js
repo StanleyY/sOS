@@ -62,6 +62,20 @@ var TSOS;
             this.writeBlock(id, '000', name);
             return true;
         };
+        FileSystemDeviceDriver.prototype.readFile = function (name) {
+            name = this.convertStrToASCII(name);
+            if (!this.generalFilenameChecks(name)) {
+                return false;
+            }
+            var current_id = this.filenameLookup(name);
+            if (current_id == "000") {
+                _StdOut.putText("Filename does not exists.");
+                return false;
+            }
+            current_id = sessionStorage.getItem(current_id).substring(1, 4);
+            _StdOut.putText(this.convertASCIItoStr(this.readBlockChain(current_id)));
+            return true;
+        };
         FileSystemDeviceDriver.prototype.writeFile = function (name, data) {
             name = this.convertStrToASCII(name);
             if (!this.generalFilenameChecks(name)) {
@@ -108,6 +122,16 @@ var TSOS;
                 this.setBlockAvailable(id);
                 id = next_id;
             }
+        };
+        FileSystemDeviceDriver.prototype.readBlockChain = function (id) {
+            var output = "";
+            while (id != "000") {
+                var data = sessionStorage.getItem(id);
+                var next_id = data.substring(1, 4);
+                output += data.substring(4);
+                id = next_id;
+            }
+            return output;
         };
         FileSystemDeviceDriver.prototype.filenameLookup = function (name) {
             var track = 0;
@@ -193,7 +217,16 @@ var TSOS;
             }
         };
         FileSystemDeviceDriver.prototype.convertStrToASCII = function (value) {
-            return value.split('').map(function (c) { return TSOS.Utils.intToHex(c.charCodeAt(0)); }).join('');
+            return value.split('').map(function (c) {
+                return TSOS.Utils.intToHex(c.charCodeAt(0));
+            }).join('');
+        };
+        FileSystemDeviceDriver.prototype.convertASCIItoStr = function (value) {
+            if (value.length < 1)
+                return "";
+            return value.match(/.{1,2}/g).map(function (char) {
+                return String.fromCharCode(TSOS.Utils.parseHex(char));
+            }).join('');
         };
         FileSystemDeviceDriver.prototype.getPaddedStr = function (str) {
             return str + Array(125 - str.length).join("0");

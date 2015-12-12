@@ -92,6 +92,9 @@ var TSOS;
             // create - creates a file
             sc = new TSOS.ShellCommand(this.shellCreate, "create", "- formats the hard disk.");
             this.commandList[this.commandList.length] = sc;
+            // read - read a given filename.
+            sc = new TSOS.ShellCommand(this.shellRead, "read", "- read a given filename.");
+            this.commandList[this.commandList.length] = sc;
             // write - write to a file
             sc = new TSOS.ShellCommand(this.shellWrite, "write", "- writes the data enclosed in quotes to a given filename.");
             this.commandList[this.commandList.length] = sc;
@@ -421,6 +424,14 @@ var TSOS;
             }
             else {
                 _StdOut.putText("create <filename>");
+            }
+        };
+        Shell.prototype.shellRead = function (args) {
+            if (args.length == 1) {
+                _krnFileSystemDriver.readFile(args[0]);
+            }
+            else {
+                _StdOut.putText("read <filename>");
             }
         };
         Shell.prototype.shellWrite = function (args) {

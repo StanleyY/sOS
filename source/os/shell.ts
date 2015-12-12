@@ -165,6 +165,12 @@ module TSOS {
                             "- formats the hard disk.");
       this.commandList[this.commandList.length] = sc;
 
+      // read - read a given filename.
+      sc = new ShellCommand(this.shellRead,
+                            "read",
+                            "- read a given filename.");
+      this.commandList[this.commandList.length] = sc;
+
       // write - write to a file
       sc = new ShellCommand(this.shellWrite,
                             "write",
@@ -507,6 +513,14 @@ module TSOS {
         }
       } else {
         _StdOut.putText("create <filename>");
+      }
+    }
+
+    public shellRead(args) {
+      if (args.length == 1) {
+        _krnFileSystemDriver.readFile(args[0]);
+      } else {
+        _StdOut.putText("read <filename>");
       }
     }
 
