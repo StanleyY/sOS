@@ -29,7 +29,6 @@ var TSOS;
                 }
             }
             sessionStorage.setItem("000", "1000" + this.convertStrToASCII("MBR") + Array(119).join("0"));
-            ;
             this.isFormatted = true;
             this.updateDisplay();
             return true;
@@ -42,6 +41,8 @@ var TSOS;
                         var id = "" + track + sector + block;
                         var data = sessionStorage.getItem(id);
                         var row = _HardDriveDisplay.insertRow();
+                        if (track == 0 && sector == 7 && block == 7)
+                            row.className = 'endOfFileNames';
                         var cell = row.insertCell();
                         cell.innerHTML = id.split('').join(':');
                         cell = row.insertCell();

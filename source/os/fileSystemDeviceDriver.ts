@@ -39,6 +39,7 @@ module TSOS {
             var id = "" + track + sector + block;
             var data = sessionStorage.getItem(id);
             var row = <HTMLTableRowElement> _HardDriveDisplay.insertRow();
+            if (track == 0 && sector == 7 && block == 7) row.className = 'endOfFileNames';
             var cell = row.insertCell();
             cell.innerHTML = id.split('').join(':');
             cell = row.insertCell();

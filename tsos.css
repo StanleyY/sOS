@@ -134,6 +134,9 @@ td {
   text-align: center;
   width: 58px;
 }
+#hardDriveTable .endOfFileNames {
+  border-bottom: 15px double black;
+}
 
 #taskBar {
   resize: none;
