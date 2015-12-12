@@ -34,10 +34,14 @@ var TSOS;
             _StdIn = _Console;
             _StdOut = _Console;
             // Load the Keyboard Device Driver
-            this.krnTrace("Loading the keyboard device driver.");
+            this.krnTrace("Loading the keyboard device driver");
             _krnKeyboardDriver = new TSOS.DeviceDriverKeyboard(); // Construct it.
             _krnKeyboardDriver.driverEntry(); // Call the driverEntry() initialization routine.
             this.krnTrace(_krnKeyboardDriver.status);
+            this.krnTrace("Loading the file system driver");
+            _krnFileSystemDriver = new TSOS.FileSystemDeviceDriver();
+            _krnFileSystemDriver.driverEntry();
+            this.krnTrace(_krnFileSystemDriver.status);
             //
             // ... more?
             //
