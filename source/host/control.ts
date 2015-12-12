@@ -46,7 +46,8 @@ module TSOS {
       _MemoryDisplay = <HTMLTableElement> document.getElementById('memoryTable');
       // Get a global reference to CPU display
       _CpuDisplay = document.getElementById('cpuDisplay');
-      // Get a global reference to PCB display
+      // Get a global reference to Hard Drive display
+      _HardDriveDisplay = document.getElementById('hardDriveTable');
 
       // Enable the added-in canvas text functions (see canvastext.ts for provenance and details).
       CanvasTextFunctions.enable(_DrawingContext);   // Text functionality is now built in to the HTML5 canvas. But this is old-school, and fun, so we'll keep it.

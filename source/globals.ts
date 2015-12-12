@@ -50,6 +50,9 @@ var _KernelInterruptQueue;          // Initializing this to null (which I would 
 var _KernelInputQueue: any = null;  // Is this better? I don't like uninitialized variables. But I also don't like using the type specifier 'any'
 var _KernelBuffers: any[] = null;   // when clearly 'any' is not what we want. There is likely a better way, but what is it?
 
+// Hard Drive Display
+var _HardDriveDisplay;
+
 // Keyboard
 var _EscapedKeys = [8, 9, 13, 17, 18, 27, 32, 38, 40]; // Backspace, Tab, Enter, Ctrl, Alt, Esc, Space, Up, Down
 

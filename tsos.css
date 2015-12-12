@@ -2,7 +2,7 @@
 
 body {
   background: #909193 url(distrib/images/linen.png) repeat;
-  font-family: Helvetica, Verdana, Arial, sans-serif;
+  font-family: monospace;
   font-size: 12pt;
   font-weight: normal;
   font-style: normal;
@@ -119,6 +119,20 @@ td {
 #readyQueueTable .statusCell {
   text-align: center;
   width: 70px;
+}
+
+#divHardDriveDisplay {
+  height: 150px;
+  width: 550px;
+  overflow: scroll;
+}
+
+#hardDriveTable {
+  width: 1300px;
+}
+#hardDriveTable td{
+  text-align: center;
+  width: 58px;
 }
 
 #taskBar {

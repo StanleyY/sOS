@@ -153,6 +153,12 @@ module TSOS {
                             "- kills a given pid.");
       this.commandList[this.commandList.length] = sc;
 
+      // format - formats the hard disk
+      sc = new ShellCommand(this.shellFormat,
+                            "format",
+                            "- formats the hard disk.");
+      this.commandList[this.commandList.length] = sc;
+
       //
       // Display the initial prompt.
       this.putPrompt();
@@ -462,6 +468,18 @@ module TSOS {
         }
       } else {
         _StdOut.putText("kill <pid>");
+      }
+    }
+
+    public shellFormat(args) {
+      if (args.length == 0) {
+        if(_krnFileSystemDriver.formatDisk()) {
+          _StdOut.putText("Format Successful.");
+        } else {
+          _StdOut.putText("Format Failed.");
+        }
+      } else {
+        _StdOut.putText("ps takes no arguments");
       }
     }
   }

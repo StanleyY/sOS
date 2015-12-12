@@ -86,6 +86,9 @@ var TSOS;
             // kill <id> - kills the specified process id.
             sc = new TSOS.ShellCommand(this.shellKill, "kill", "- kills a given pid.");
             this.commandList[this.commandList.length] = sc;
+            // format - formats the hard disk
+            sc = new TSOS.ShellCommand(this.shellFormat, "format", "- formats the hard disk.");
+            this.commandList[this.commandList.length] = sc;
             //
             // Display the initial prompt.
             this.putPrompt();
@@ -385,6 +388,19 @@ var TSOS;
             }
             else {
                 _StdOut.putText("kill <pid>");
+            }
+        };
+        Shell.prototype.shellFormat = function (args) {
+            if (args.length == 0) {
+                if (_krnFileSystemDriver.formatDisk()) {
+                    _StdOut.putText("Format Successful.");
+                }
+                else {
+                    _StdOut.putText("Format Failed.");
+                }
+            }
+            else {
+                _StdOut.putText("ps takes no arguments");
             }
         };
         return Shell;
