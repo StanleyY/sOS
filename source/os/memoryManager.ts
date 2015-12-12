@@ -27,10 +27,10 @@ module TSOS {
     }
 
     // Loads the program into memory and creates a pcb.
-    // Returns the PCB or null if no partitions available.
+    // Returns the base address or -1 if no partitions available.
     public loadProgram(bytes) {
       if (this.availableParitions.length < 1) {
-        return null;
+        return -1;
       }
       var base = this.availableParitions.shift() * 256;
       this.write(bytes, base, 0);
@@ -58,6 +58,14 @@ module TSOS {
       if (index > -1) {
         return _Memory.memory[index];
       }
+    }
+
+    public fetchPartitionData(base): string {
+      var output = "";
+      for(var i = base; i < base + 256; i++) {
+        output += _Memory.memory[i];
+      }
+      return output;
     }
 
     public increment(base, index): void {
