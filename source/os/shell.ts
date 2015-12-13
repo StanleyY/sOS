@@ -195,6 +195,12 @@ module TSOS {
                             "displays the current scheduling algorithm.");
       this.commandList[this.commandList.length] = sc;
 
+      // setschedule - sets the scheduling algorithm out of [rr, fcfs, priority].
+      sc = new ShellCommand(this.shellSetSchedule,
+                            "setschedule",
+                            "sets the scheduling algorithm out of [rr, fcfs, priority]");
+      this.commandList[this.commandList.length] = sc;
+
       //
       // Display the initial prompt.
       this.putPrompt();
@@ -577,7 +583,15 @@ module TSOS {
       if (args.length == 0) {
         _StdOut.putText("Current Scheduling Algorithm: " + _Scheduler.mode);
       } else {
-        _StdOut.putText("ps takes no arguments");
+        _StdOut.putText("getschedule takes no arguments");
+      }
+    }
+
+    public shellSetSchedule(args) {
+      if (args.length == 1 && (args[0] == 'rr' || args[0] == 'fcfs' || args[0] == 'priority')) {
+        _Scheduler.mode = args[0];
+      } else {
+        _StdOut.putText("Usage: setschedule [rr, fcfs, priority]");
       }
     }
   }

@@ -60,6 +60,16 @@ module TSOS {
     }
 
     public schedule(): void {
+      if (this.mode == 'rr') {
+        this.roundRobin();
+      } else if (this.mode == 'fcfs') {
+        this.firstComeFirstServe();
+      } else {
+        // TODO Priority
+      }
+    }
+
+    private roundRobin(): void {
       if (this.readyQueue.length > 0) {
         if (this.currentQuantum >= this.quantum) {
           this.currentQuantum = 0;
@@ -84,6 +94,22 @@ module TSOS {
         this.currentQuantum++;
       } else {
         this.currentQuantum = 0;
+        // isExecuting should be false already.
+        _CPU.isExecuting = false;
+      }
+    }
+
+    private firstComeFirstServe(): void {
+      if (this.readyQueue.length > 0) {
+        this.runCPU();
+
+        if (_CPU.IR == "00") {  // The CPU just finished a process
+          this.freePCB();
+          this.currentQuantum = -1;
+        } else {
+          this.updatePCB();
+        }
+      } else {
         // isExecuting should be false already.
         _CPU.isExecuting = false;
       }

@@ -203,11 +203,13 @@ module TSOS {
       } else if (this.Xreg == 2) {
         var address = this.Yreg;
         var char = this.readMemValue(address);
+        var output = "";
         while(address < 256 &&  char != 0) {
-          _StdOut.putText(String.fromCharCode(char));
+          output += String.fromCharCode(char);
           address++;
           char = this.readMemValue(address);
         }
+        _StdOut.putText(output);
       } else {
         this.abort("Invalid Sys Call, Aborting.");
       }

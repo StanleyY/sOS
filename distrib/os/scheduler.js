@@ -58,6 +58,16 @@ var TSOS;
             return pcb.pid;
         };
         Scheduler.prototype.schedule = function () {
+            if (this.mode == 'rr') {
+                this.roundRobin();
+            }
+            else if (this.mode == 'fcfs') {
+                this.firstComeFirstServe();
+            }
+            else {
+            }
+        };
+        Scheduler.prototype.roundRobin = function () {
             if (this.readyQueue.length > 0) {
                 if (this.currentQuantum >= this.quantum) {
                     this.currentQuantum = 0;
@@ -82,6 +92,22 @@ var TSOS;
             }
             else {
                 this.currentQuantum = 0;
+                // isExecuting should be false already.
+                _CPU.isExecuting = false;
+            }
+        };
+        Scheduler.prototype.firstComeFirstServe = function () {
+            if (this.readyQueue.length > 0) {
+                this.runCPU();
+                if (_CPU.IR == "00") {
+                    this.freePCB();
+                    this.currentQuantum = -1;
+                }
+                else {
+                    this.updatePCB();
+                }
+            }
+            else {
                 // isExecuting should be false already.
                 _CPU.isExecuting = false;
             }
