@@ -2,6 +2,7 @@ var TSOS;
 (function (TSOS) {
     var Scheduler = (function () {
         function Scheduler() {
+            this.mode = 'rr';
             this.quantum = 6;
             this.currentQuantum = 1;
             this.readyQueue = [];

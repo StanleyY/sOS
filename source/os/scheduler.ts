@@ -1,6 +1,7 @@
 module TSOS {
 
   export class Scheduler {
+    mode: string = 'rr';
     quantum: number = 6;
     currentQuantum: number = 1;
     readyQueue: PCB[] = [];

@@ -104,6 +104,9 @@ var TSOS;
             // ls - displays available files.
             sc = new TSOS.ShellCommand(this.shellListFiles, "ls", "- displays available files.");
             this.commandList[this.commandList.length] = sc;
+            // getschedule - displays the current scheduling algorithm.
+            sc = new TSOS.ShellCommand(this.shellGetSchedule, "getschedule", "displays the current scheduling algorithm.");
+            this.commandList[this.commandList.length] = sc;
             //
             // Display the initial prompt.
             this.putPrompt();
@@ -474,6 +477,14 @@ var TSOS;
             }
             else {
                 _StdOut.putText("ls takes no arguments");
+            }
+        };
+        Shell.prototype.shellGetSchedule = function (args) {
+            if (args.length == 0) {
+                _StdOut.putText("Current Scheduling Algorithm: " + _Scheduler.mode);
+            }
+            else {
+                _StdOut.putText("ps takes no arguments");
             }
         };
         return Shell;
