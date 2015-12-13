@@ -48,7 +48,7 @@ module TSOS {
       _krnFileSystemDriver = new FileSystemDeviceDriver();
       _krnFileSystemDriver.driverEntry();
       this.krnTrace(_krnFileSystemDriver.status);
-      _krnFileSystemDriver.formatDisk(); ///////////////////////////////////////////////////
+      //_krnFileSystemDriver.formatDisk();
       //
       // ... more?
       //
