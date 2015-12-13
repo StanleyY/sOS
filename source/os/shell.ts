@@ -438,13 +438,16 @@ module TSOS {
     }
 
     public shellLoad(args) {
-      if (args.length == 0) {
+      if (args.length == 0 || args.length == 1) {
         var regex = /^[0-9A-F ]+$/g;
         var input = _ProgramInput.value;
         input = input.replace(/\n+/g, '');
         if (input.match(regex) && input.replace(/\s+/g, '').length % 2 == 0) {
           var pcb = _Kernel.createProcess(input.replace(/\s+/g, ''));
           if (pcb) {
+            if (args.length == 1) {
+              pcb.setPriority(parseInt(args[0]));
+            }
             _Scheduler.loadJob(pcb);
             _StdOut.putText("Loaded to PID: " + pcb.pid);
           } else {
@@ -454,7 +457,7 @@ module TSOS {
           _StdOut.putText("Input is invalid.");
         }
       } else {
-        _StdOut.putText("load takes no arguments");
+        _StdOut.putText("load <optional priority number, 0 is the highest>");
       }
     }
 

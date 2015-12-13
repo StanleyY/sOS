@@ -2,6 +2,7 @@
 
 module TSOS {
   export class PCB {
+    priority: number = 1;
     limitReg: number;
     filename: string;
     time: number = 0;
@@ -34,6 +35,10 @@ module TSOS {
     public updateBaseReg(base) {
       this.baseReg = base;
       this.limitReg = base + 256;
+    }
+
+    public setPriority(priority) {
+      this.priority = priority;
     }
   }
 }

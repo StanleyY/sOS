@@ -58,37 +58,16 @@ var TSOS;
             return pcb.pid;
         };
         Scheduler.prototype.schedule = function () {
-            if (this.mode == 'rr') {
-                this.roundRobin();
-            }
-            else if (this.mode == 'fcfs') {
-                this.firstComeFirstServe();
-            }
-            else {
-            }
-        };
-        Scheduler.prototype.roundRobin = function () {
             if (this.readyQueue.length > 0) {
-                if (this.currentQuantum >= this.quantum) {
-                    this.currentQuantum = 0;
-                    // Only bother rotating the queue if there is more than one program
-                    if (this.readyQueue.length > 1) {
-                        this.readyQueue[0].setStatus("Waiting");
-                        var pcb = this.readyQueue.shift();
-                        this.readyQueue.push(pcb);
-                        _CPU.isExecuting = false;
-                        TSOS.Control.hostLog("Quantum Exceeded, rotated programs", "scheduler");
-                    }
+                if (this.mode == 'rr') {
+                    this.roundRobin();
                 }
-                this.runCPU();
-                if (_CPU.IR == "00") {
-                    this.freePCB();
-                    this.currentQuantum = -1;
+                else if (this.mode == 'fcfs') {
+                    this.firstComeFirstServe();
                 }
                 else {
-                    this.updatePCB();
+                    this.priority();
                 }
-                this.currentQuantum++;
             }
             else {
                 this.currentQuantum = 0;
@@ -96,20 +75,52 @@ var TSOS;
                 _CPU.isExecuting = false;
             }
         };
-        Scheduler.prototype.firstComeFirstServe = function () {
-            if (this.readyQueue.length > 0) {
-                this.runCPU();
-                if (_CPU.IR == "00") {
-                    this.freePCB();
-                    this.currentQuantum = -1;
-                }
-                else {
-                    this.updatePCB();
+        Scheduler.prototype.roundRobin = function () {
+            if (this.currentQuantum >= this.quantum) {
+                this.currentQuantum = 0;
+                // Only bother rotating the queue if there is more than one program
+                if (this.readyQueue.length > 1) {
+                    this.readyQueue[0].setStatus("Waiting");
+                    var pcb = this.readyQueue.shift();
+                    this.readyQueue.push(pcb);
+                    _CPU.isExecuting = false;
+                    TSOS.Control.hostLog("Quantum Exceeded, rotated programs", "scheduler");
                 }
             }
+            this.runCPU();
+            if (_CPU.IR == "00") {
+                this.freePCB();
+                this.currentQuantum = -1;
+            }
             else {
-                // isExecuting should be false already.
-                _CPU.isExecuting = false;
+                this.updatePCB();
+            }
+            this.currentQuantum++;
+        };
+        Scheduler.prototype.firstComeFirstServe = function () {
+            this.runCPU();
+            if (_CPU.IR == "00") {
+                this.freePCB();
+            }
+            else {
+                this.updatePCB();
+            }
+        };
+        Scheduler.prototype.priority = function () {
+            this.sortReadyQueue();
+            this.runCPU();
+            if (_CPU.IR == "00") {
+                this.freePCB();
+            }
+            else {
+                this.updatePCB();
+            }
+        };
+        Scheduler.prototype.sortReadyQueue = function () {
+            if (this.readyQueue.length > 3) {
+                var temp = this.readyQueue.slice(1);
+                temp.sort(function (a, b) { return a.priority - b.priority; });
+                this.readyQueue = this.readyQueue.slice(0, 1).concat(temp);
             }
         };
         Scheduler.prototype.runCPU = function () {
@@ -187,11 +198,14 @@ var TSOS;
             }
             // Ready Queue
             table = document.getElementById('readyQueueTable');
-            table.innerHTML = "<tr><td class='statusCell'>Status</td><td>PID</td><td>PC</td><td>ACC</td><td>X</td><td>Y</td><td>Z</td><td>Base</td><td>Location</td></tr>";
+            table.innerHTML = "<tr><td class='statusCell'>Status</td><td class='statusCell'>Priority</td><td>PID</td><td>PC</td><td>ACC</td><td>X</td><td>Y</td><td>Z</td><td>Base</td><td>Location</td></tr>";
             for (var i = 0; i < this.readyQueue.length; i++) {
                 var row = table.insertRow(); // insert a new row at 0
                 var statusCell = row.insertCell();
                 statusCell.innerHTML = this.readyQueue[i].status;
+                statusCell.className = "statusCell";
+                statusCell = row.insertCell();
+                statusCell.innerHTML = "" + this.readyQueue[i].priority;
                 statusCell.className = "statusCell";
                 row.insertCell().innerHTML = "" + this.readyQueue[i].pid;
                 row.insertCell().innerHTML = "" + this.readyQueue[i].PC;
