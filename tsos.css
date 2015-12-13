@@ -99,7 +99,7 @@ td {
 
 #divResidentQueueDisplay {
   display: inline-block;
-  height: 125px;
+  height: 135px;
   overflow-y: scroll;
 }
 #residentQueueTable td{
@@ -110,11 +110,12 @@ td {
 
 #divReadyQueueDisplay {
   display: inline-block;
-  height: 125px;
+  height: 135px;
   overflow-y: scroll;
 }
 #readyQueueTable td {
   text-align: center;
+  white-space: nowrap;
   width: 50px;
 }
 #readyQueueTable .statusCell {

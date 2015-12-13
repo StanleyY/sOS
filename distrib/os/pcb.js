@@ -21,6 +21,7 @@ var TSOS;
             this.time = 0;
             this.waitingTime = 0;
             this.limitReg = this.baseReg + 256;
+            this.filename = pid + "@sys";
         }
         PCB.prototype.getPID = function () {
             return this.pid;
@@ -30,6 +31,10 @@ var TSOS;
         };
         PCB.prototype.setFilename = function (name) {
             this.filename = name;
+        };
+        PCB.prototype.updateBaseReg = function (base) {
+            this.baseReg = base;
+            this.limitReg = base + 256;
         };
         return PCB;
     })();

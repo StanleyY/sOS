@@ -72,8 +72,6 @@ module TSOS {
     }
 
     public cycle(): void {
-      // TODO: Accumulate CPU usage and profiling statistics here.
-      // Do the real work here. Be sure to set this.isExecuting appropriately.
       if (this.isExecuting) {
         _Kernel.krnTrace('CPU cycle');
         var opCode = this.readNextMemValueInHex();

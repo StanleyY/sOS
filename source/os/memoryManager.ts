@@ -33,6 +33,12 @@ module TSOS {
         return -1;
       }
       var base = this.availableParitions.shift() * 256;
+      for (var i = base; i < base + 256; i++) {
+        _Memory.memory[i] = '00';
+      }
+      if (bytes.length > 512) {
+        bytes = bytes.substring(0, 512);
+      }
       this.write(bytes, base, 0);
       Control.hostLog("Allocated Memory Partition: " + base / 256, "Memory Manager");
       return base;
@@ -42,7 +48,10 @@ module TSOS {
     public write(bytes, base, index): void {
       index = this.getMemoryAddress(base, index);
       if (index > -1) {
-        for(var i = 0; i < bytes.length; i = i + 2) {
+        for(var i = 0; i < base + 256 && i < bytes.length; i = i + 2) {
+          if (bytes.substring(i, i+2) == undefined) {
+            console.log(bytes.substring(i, i+2));
+          }
           _Memory.memory[index] = bytes.substring(i, i+2);
           index++;
         }
@@ -87,6 +96,17 @@ module TSOS {
           cell = row.insertCell();
           cell.innerHTML = _Memory.memory[j];
         }
+      }
+    }
+
+    public printPartitions() {
+      for(var p = 0; p < 3; p++) {
+        var output = "";
+        for(var i = p * 256; i < p * 256 + 256; i++) {
+          output += _Memory.memory[i];
+        }
+        console.log("Partition: " + p);
+        console.log("data: " + output);
       }
     }
   }

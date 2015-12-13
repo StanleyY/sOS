@@ -16,6 +16,7 @@ module TSOS {
                 public Yreg: number = 0,
                 public Zflag: number = 0) {
       this.limitReg = this.baseReg + 256;
+      this.filename = pid + "@sys";
     }
 
     public getPID(): number {
@@ -28,6 +29,11 @@ module TSOS {
 
     public setFilename(name): void {
       this.filename = name;
+    }
+
+    public updateBaseReg(base) {
+      this.baseReg = base;
+      this.limitReg = base + 256;
     }
   }
 }

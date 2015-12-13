@@ -42,6 +42,7 @@ var TSOS;
             _krnFileSystemDriver = new TSOS.FileSystemDeviceDriver();
             _krnFileSystemDriver.driverEntry();
             this.krnTrace(_krnFileSystemDriver.status);
+            _krnFileSystemDriver.formatDisk(); ///////////////////////////////////////////////////
             //
             // ... more?
             //
@@ -145,21 +146,27 @@ var TSOS;
         // - CloseFile
         Kernel.prototype.createProcess = function (bytes) {
             var base = _MMU.loadProgram(bytes);
-            if (base != null) {
+            if (base != -1) {
                 var pcb = new TSOS.PCB(_PID, base, 'Memory');
                 _PID++;
                 return pcb;
             }
             else {
                 var pcb = new TSOS.PCB(_PID, 0, 'Hard Drive');
-                var filename = _PID + '@sys';
-                if (_krnFileSystemDriver.createFile(filename) && _krnFileSystemDriver.writeFile(filename, bytes)) {
+                if (_krnFileSystemDriver.createFile(pcb.filename) && _krnFileSystemDriver.writeFile(pcb.filename, bytes)) {
                     _PID++;
-                    pcb.setFilename(filename);
                     return pcb;
                 }
                 return null;
             }
+        };
+        Kernel.prototype.swapOut = function (pcb) {
+            var data = _MMU.fetchPartitionData(pcb.baseReg);
+            if (!_krnFileSystemDriver.createFile(pcb.filename) || !_krnFileSystemDriver.writeFile(pcb.filename, data)) {
+                return false;
+            }
+            _MMU.availableParitions.push(pcb.baseReg / 256);
+            return true;
         };
         //
         // OS Utility Routines

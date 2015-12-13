@@ -75,18 +75,10 @@ module TSOS {
         this.runCPU();
 
         if (_CPU.IR == "00") {  // The CPU just finished a process
-          var pcb = this.readyQueue.shift(); // Remove the PCB that was just used.
-          _MMU.availableParitions.push(pcb.baseReg / 256); // Let the MMU know that this partition is now available.
-          Control.hostLog("PID: " + pcb.pid + " turnaround time: " + pcb.time + ", waiting time: " + pcb.waitingTime, "scheduler");
-          Control.hostLog("Freed Memory Partition: " + pcb.baseReg / 256, "scheduler");
+          this.freePCB();
           this.currentQuantum = -1;
         } else {
-          // Load PCB with the new commands
-          this.readyQueue[0].PC =_CPU.PC;
-          this.readyQueue[0].Acc =_CPU.Acc;
-          this.readyQueue[0].Xreg =_CPU.Xreg;
-          this.readyQueue[0].Yreg =_CPU.Yreg;
-          this.readyQueue[0].Zflag =_CPU.Zflag;
+          this.updatePCB();
         }
         this.currentQuantum++;
       } else {
@@ -99,12 +91,58 @@ module TSOS {
     public runCPU() {
       if (!_CPU.isExecuting) {
           Control.hostLog("Loaded PID: " + this.readyQueue[0].pid, "scheduler");
-          this.readyQueue[0].setStatus("Running");
+          var pcb = this.readyQueue[0];
+          pcb.setStatus("Running");
+          if (pcb.location != 'Memory') {
+            this.runSwapper();
+          }
           _CPU.loadPCB(this.readyQueue[0]);
           _CPU.isExecuting = true;
         }
         _CPU.cycle();
         this.updatePCBTime();
+    }
+
+    public runSwapper() {
+      var pcb = this.readyQueue[0];
+      var bytes = _krnFileSystemDriver.readFileData(pcb.filename);
+      _krnFileSystemDriver.deleteFile(pcb.filename);
+
+      var base = _MMU.loadProgram(bytes);
+      if (base != -1) {
+        pcb.updateBaseReg(base);
+      } else {
+        var i = this.readyQueue.length - 1;
+        while(this.readyQueue[i].location != 'Memory') {
+          // Search for most recently used process that is in memory.
+          // This step shouldn't really be necessary except for when step
+          // mode is enabled.
+          i--;
+        }
+        var swappingPCB = this.readyQueue[i];
+        _Kernel.swapOut(swappingPCB);
+        swappingPCB.location = 'Hard Drive';
+
+        base = _MMU.loadProgram(bytes);
+        pcb.updateBaseReg(base);
+      }
+      pcb.location = 'Memory';
+    }
+
+    public updatePCB() {
+      // Load PCB with the new commands
+      this.readyQueue[0].PC = _CPU.PC;
+      this.readyQueue[0].Acc = _CPU.Acc;
+      this.readyQueue[0].Xreg = _CPU.Xreg;
+      this.readyQueue[0].Yreg = _CPU.Yreg;
+      this.readyQueue[0].Zflag = _CPU.Zflag;
+    }
+
+    public freePCB() {
+      var pcb = this.readyQueue.shift(); // Remove the PCB that was just used.
+      _MMU.availableParitions.push(pcb.baseReg / 256); // Let the MMU know that this partition is now available.
+      Control.hostLog("PID: " + pcb.pid + " turnaround time: " + pcb.time + ", waiting time: " + pcb.waitingTime, "scheduler");
+      Control.hostLog("Freed Memory Partition: " + pcb.baseReg / 256, "scheduler");
     }
 
     public updatePCBTime() {
@@ -131,7 +169,7 @@ module TSOS {
       }
       // Ready Queue
       table = <HTMLTableElement> document.getElementById('readyQueueTable');
-      table.innerHTML = "<tr><td class='statusCell'>Status</td><td>PID</td><td>PC</td><td>ACC</td><td>X</td><td>Y</td><td>Z</td><td>Base</td></tr>";
+      table.innerHTML = "<tr><td class='statusCell'>Status</td><td>PID</td><td>PC</td><td>ACC</td><td>X</td><td>Y</td><td>Z</td><td>Base</td><td>Location</td></tr>";
       for (var i = 0; i < this.readyQueue.length; i++) {
         var row = <HTMLTableRowElement> table.insertRow();  // insert a new row at 0
         var statusCell = row.insertCell();
@@ -144,6 +182,7 @@ module TSOS {
         row.insertCell().innerHTML = "" + this.readyQueue[i].Yreg;
         row.insertCell().innerHTML = "" + this.readyQueue[i].Zflag;
         row.insertCell().innerHTML = "0x" + Utils.intToHex(this.readyQueue[i].baseReg);
+        row.insertCell().innerHTML = this.readyQueue[i].location;
       }
     }
 
